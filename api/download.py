@@ -7,12 +7,13 @@ from urllib.parse import urlparse, parse_qs
 
 # Format map: our format key → yt-dlp format selector
 FORMAT_SELECTORS = {
-    "video_hd":  "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best[height<=1080]",
-    "video_sd":  "bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]/best[height<=480][ext=mp4]/best[height<=480]",
+    "video_hd":  "best[ext=mp4]/best",
+    "video_sd":  "best[height<=480][ext=mp4]/best[height<=480]",
     "mp3":       "bestaudio/best",
     "image_jpg": "best",
     "image_png": "best",
 }
+
 
 QUALITY_SELECTORS = {
     # Video HD qualities
