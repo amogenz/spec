@@ -3,269 +3,496 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AMO Downloader — FB · IG · YT</title>
+<title>AMO Downloader — Premium Minimalist</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap');
-
+  /* ── APPLE DESIGN SYSTEM INTEGRATION ── */
+  @font-face {
+    font-family: 'BerlinSansFB';
+    /* Menggunakan jsDelivr sebagai CDN gratis dari GitHub kamu */
+    src: url('https://cdn.jsdelivr.net/gh/amogenz/Amogenz/fonts/BerlinSansFBDemi-Bold.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/amogenz/Amogenz/fonts/BerlinSansFBDemi-Bold.woff') format('woff'),
+         url('https://cdn.jsdelivr.net/gh/amogenz/Amogenz/fonts/BerlinSansFB.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
   :root {
-    --neon: #39FF14;
-    --neon2: #00f5ff;
-    --neon3: #ff006e;
-    --bg: #050a05;
-    --bg2: #0a110a;
-    --bg3: #0d1a0d;
-    --card: #0f1a0f;
-    --border: rgba(57,255,20,0.18);
-    --border-hot: rgba(57,255,20,0.6);
-    --text: #c8e6c8;
-    --muted: #4a6b4a;
+    --blue: #0071E3;
+    --blue-dark: #0055C6;
+    --text-primary: #1D1D1F;
+    --text-secondary: #6E6E73;
+    --text-tertiary: #AEAEB2;
+    --bg-white: #FFFFFF;
+    --bg-surface: #F5F5F7;
+    --border-light: #D2D2D7;
+    --system-success: #34C759;
+    --system-error: #FF3B30;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { 
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
 
   body {
-    background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif;
-    min-height: 100vh; overflow-x: hidden;
+    background-color: var(--bg-white);
+    color: var(--text-primary);
+    font-size: 17px;
+    line-height: 1.6;
+    padding-bottom: 96px;
   }
 
-  body::before {
-    content: ''; position: fixed; inset: 0;
-    background-image: linear-gradient(rgba(57,255,20,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,20,0.03) 1px, transparent 1px);
-    background-size: 40px 40px; pointer-events: none; z-index: 0;
+  /* Sticky Header with Backdrop Blur */
+  nav {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-light);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  body::after {
-    content: ''; position: fixed; inset: 0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.12) 2px, rgba(0,0,0,0.12) 4px);
-    pointer-events: none; z-index: 0;
+  .nav-container {
+    width: 100%;
+    max-width: 980px;
+    padding: 0 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .wrap { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 20px 16px 80px; }
-  header { text-align: center; padding: 44px 0 20px; }
-
-  .badge {
-    display: inline-flex; align-items: center; gap: 7px; background: rgba(57,255,20,0.07);
-    border: 1px solid var(--border); border-radius: 4px; padding: 4px 14px;
-    font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--neon); letter-spacing: 3px; margin-bottom: 18px;
+  .nav-tabs {
+    display: flex;
+    gap: 24px;
   }
 
-  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--neon); animation: blink 1.4s infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+  .nav-link {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    line-height: 44px;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--text-primary); }
+  .nav-link.active { color: var(--blue); font-weight: 500; }
+
+  /* Main Constraint Layout */
+  .main-container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 64px 24px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
 
   h1 {
-    font-family: 'Orbitron', sans-serif; font-size: clamp(30px, 7vw, 52px); font-weight: 900; color: var(--neon);
-    text-shadow: 0 0 24px rgba(57,255,20,0.45), 0 0 60px rgba(57,255,20,0.15); letter-spacing: -1px; line-height: 1;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    margin-bottom: 16px;
   }
-  h1 .accent { color: var(--neon2); text-shadow: 0 0 24px rgba(0,245,255,0.45); }
-  .sub { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 3px; margin-top: 10px; }
 
-  .nav-tabs { display: flex; gap: 8px; margin: 20px 0; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-  .nav-btn {
-    background: transparent; border: 1px solid transparent; color: var(--muted); padding: 8px 16px;
-    font-family: 'Share Tech Mono', monospace; cursor: pointer; font-size: 13px; letter-spacing: 1px; border-radius: 4px;
+  .subtitle {
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.3;
   }
-  .nav-btn.active { border-color: var(--border-hot); color: var(--neon); background: rgba(57,255,20,0.05); }
 
   .panel { display: none; }
   .panel.active { display: block; }
 
-  .input-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 14px; }
-  .input-card:focus-within { border-color: var(--border-hot); box-shadow: 0 0 24px rgba(57,255,20,0.07); }
-  .input-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--neon); letter-spacing: 2px; margin-bottom: 10px; display: block; }
-  .input-row { display: flex; gap: 8px; }
-
-  .url-input {
-    flex: 1; background: var(--bg2); border: 1px solid var(--border); border-radius: 7px;
-    padding: 13px 16px; color: var(--text); font-family: 'Share Tech Mono', monospace; font-size: 13px; outline: none; min-width: 0;
+  /* Cards & Containers standard Apple */
+  .apple-card {
+    background-color: var(--bg-surface);
+    border-radius: 18px;
+    padding: 40px;
+    margin-bottom: 24px;
   }
 
-  .paste-btn {
-    background: rgba(57,255,20,0.09); border: 1px solid var(--border-hot); border-radius: 7px;
-    padding: 0 16px; color: var(--neon); font-family: 'Share Tech Mono', monospace; font-size: 11px; cursor: pointer; white-space: nowrap;
+  .form-group {
+    margin-bottom: 24px;
   }
 
-  .fetch-btn {
-    width: 100%; padding: 16px; background: var(--neon); border: none; border-radius: 9px; color: #000;
-    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 2px; cursor: pointer; text-transform: uppercase;
+  .input-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
-  .fetch-btn:disabled { opacity: .45; cursor: not-allowed; }
 
-  .loading { display: none; text-align: center; padding: 44px; }
-  .loading.show { display: block; }
-  .spinner-ring { width: 44px; height: 44px; border: 2px solid var(--border); border-top-color: var(--neon); border-radius: 50%; animation: spin .75s linear infinite; margin: 0 auto 14px; }
+  /* Form Input Text Style */
+  .input-wrapper {
+    display: flex;
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .input-wrapper:focus-within {
+    border-color: var(--blue);
+  }
+
+  .apple-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 16px;
+    font-size: 17px;
+    color: var(--text-primary);
+    outline: none;
+  }
+  .apple-input::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  /* Button Elements Stylings */
+  .btn-primary {
+    background-color: var(--blue);
+    color: var(--bg-white);
+    font-size: 17px;
+    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: 980px; /* Pill Shape */
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    width: 100%;
+  }
+  .btn-primary:hover { background-color: var(--blue-dark); }
+  .btn-primary:disabled {
+    background-color: var(--text-tertiary);
+    cursor: not-allowed;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--blue);
+    font-size: 17px;
+    font-weight: 400;
+    border: none;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn-secondary:hover { opacity: 0.8; text-decoration: underline; }
+
+  .btn-ghost-apple {
+    background: transparent;
+    color: var(--blue);
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-ghost-apple:hover { text-decoration: underline; }
+
+  /* Semantic State Alert Elements */
+  .apple-error-box {
+    display: none;
+    background-color: #FFF2F2;
+    border: 1px solid rgba(255, 59, 48, 0.2);
+    color: var(--system-error);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-top: 16px;
+    font-size: 14px;
+  }
+  .apple-error-box.show { display: block; }
+
+  /* Result Deck Container */
+  .result-deck {
+    display: none;
+    margin-top: 40px;
+    animation: fadeIn 0.4s ease;
+  }
+  .result-deck.show { display: block; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .media-title {
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+
+  .media-platform {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  /* Grid Layout for Formats */
+  .format-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .format-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  .format-card:hover { border-color: var(--text-secondary); }
+  .format-card.selected {
+    border-color: var(--blue);
+    background-color: #F0F7FF;
+  }
+
+  .format-title { font-size: 17px; font-weight: 500; color: var(--text-primary); }
+  .format-desc { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+  /* Progress Downloader Panel */
+  .progress-bar-container {
+    display: none;
+    background: var(--border-light);
+    height: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .progress-bar-fill {
+    background: var(--blue);
+    width: 0%;
+    height: 100%;
+    transition: width 0.1s ease;
+  }
+
+  /* ── APPLE LIVE PREVIEW INTERFACE & EQUALIZER CONTROLS ── */
+  .preview-wrapper-box {
+    background-color: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 24px;
+  }
+
+  .apple-player-ui {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .apple-player-ui.show { display: flex; }
+
+  .player-control-row { display: flex; align-items: center; gap: 20px; }
+
+  .apple-play-btn {
+    background-color: var(--blue);
+    color: var(--bg-white);
+    border: none;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background-color 0.2s;
+  }
+  .apple-play-btn:hover { background-color: var(--blue-dark); }
+
+  /* Equalizer Module: FIX MUTLAK hanya muncul di MP3 bray */
+  .apple-eq-bars-container {
+    display: none;
+    flex: 1;
+    height: 32px;
+    align-items: flex-end;
+    gap: 4px;
+    border-bottom: 1px solid var(--border-light);
+    overflow: hidden;
+    padding-bottom: 2px;
+  }
+  .apple-eq-bars-container.show { display: flex; }
+  .apple-eq-bar {
+    flex: 1;
+    background-color: var(--blue);
+    height: 3px;
+    border-radius: 2px 2px 0 0;
+  }
+  .apple-eq-bars-container.playing .apple-eq-bar:nth-child(2n) { animation: appleEqJump 0.6s ease-in-out infinite alternate; }
+  .apple-eq-bars-container.playing .apple-eq-bar:nth-child(3n+1) { animation: appleEqJump 0.8s ease-in-out infinite alternate; }
+  .apple-eq-bars-container.playing .apple-eq-bar:nth-child(4n+2) { animation: appleEqJump 0.5s ease-in-out infinite alternate; }
+  @keyframes appleEqJump { 0% { height: 3px; } 100% { height: 26px; background-color: var(--blue-dark); } }
+
+  .player-timer {
+    font-size: 14px;
+    color: var(--text-secondary);
+    min-width: 50px;
+    text-align: right;
+  }
+
+  .apple-video-window {
+    width: 100%;
+    max-height: 400px;
+    border-radius: 10px;
+    background-color: #000000;
+    display: none;
+    margin-top: 12px;
+  }
+  .apple-video-window.show { display: block; }
+
+  /* History Stack */
+  .history-stack { display: flex; flex-direction: column; gap: 12px; }
+  .history-row {
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .history-title-text { font-size: 17px; font-weight: 500; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
+  .history-date-text { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+  .loading-container { display: none; text-align: center; padding: 40px; }
+  .loading-spinner {
+    width: 32px; height: 32px;
+    border: 3px solid var(--border-light);
+    border-top-color: var(--blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto;
+  }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-txt { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--neon); letter-spacing: 3px; }
 
-  .error-box {
-    display: none; background: rgba(255,0,110,0.07); border: 1px solid rgba(255,0,110,0.28);
-    border-radius: 8px; padding: 14px 18px; margin-top: 14px; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--neon3);
+  .footer-copyright {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 96px;
   }
-  .error-box.show { display: block; }
-
-  .result-card { display: none; background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-top: 14px; }
-  .result-card.show { display: block; }
-
-  .media-header { padding: 20px; border-bottom: 1px solid var(--border); }
-  .media-meta { min-width: 0; }
-  .meta-title { font-size: 15px; font-weight: 600; color: #e8ffe8; margin-bottom: 6px; line-height: 1.4; }
-  .meta-platform { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--neon2); letter-spacing: 1px; }
-
-  .section { padding: 20px; border-bottom: 1px solid var(--border); }
-  .sec-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--neon); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
-
-  .fmt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
-  .fmt-card {
-    display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 14px 8px;
-    border-radius: 8px; background: var(--bg2); border: 1px solid var(--border); cursor: pointer; font-size: 12px; color: var(--muted); text-align: center;
-  }
-  .fmt-card.sel { background: rgba(57,255,20,0.09); border-color: var(--neon); color: var(--neon); }
-
-  .prog-wrap { display: none; margin-bottom: 12px; background: var(--bg2); border: 1px solid var(--border); height: 12px; border-radius: 4px; overflow: hidden; }
-  .prog-wrap.show { display: block; }
-  .prog-fill { background: linear-gradient(90deg, var(--neon), var(--neon2)); width: 0%; height: 100%; transition: width 0.1s ease; }
-
-  .dl-btn {
-    width: 100%; padding: 16px; background: transparent; border: 1px solid var(--neon);
-    border-radius: 8px; color: var(--neon); font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-  }
-  .dl-btn:hover { background: rgba(57,255,20,0.1); box-shadow: 0 0 22px rgba(57,255,20,0.2); }
-  .dl-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  /* ── CUSTOM CYBERPLAYER & EQUALIZER UI ── */
-  .preview-box { background: #010501; border: 1px dashed var(--border-hot); border-radius: 6px; padding: 12px; min-height: 80px; position: relative; }
-  
-  .cyber-player { width: 100%; display: none; flex-direction: column; gap: 12px; padding: 4px 0; }
-  .cyber-player.show { display: flex; }
-  
-  .player-main-row { display: flex; align-items: center; gap: 14px; }
-  
-  .play-pause-btn {
-    background: rgba(57,255,20,0.1); border: 1px solid var(--neon); width: 42px; height: 42px;
-    border-radius: 50%; color: var(--neon); font-size: 16px; cursor: pointer; display: flex;
-    align-items: center; justify-content: center; outline: none; transition: all 0.2s;
-  }
-  .play-pause-btn:hover { background: var(--neon); color: #000; box-shadow: 0 0 12px var(--neon); }
-
-  /* Equalizer Bars Panel */
-  .eq-container { display: none; flex: 1; height: 34px; align-items: flex-end; gap: 3px; padding-bottom: 2px; border-bottom: 1px solid rgba(57,255,20,0.15); overflow: hidden; }
-  .eq-container.show { display: flex; }
-  .eq-bar { flex: 1; background: var(--neon); height: 3px; transition: height 0.15s ease; border-radius: 1px 1px 0 0; }
-  
-  /* Animasi Equalizer Aktif */
-  .eq-container.playing .eq-bar:nth-child(2n) { animation: eqJump 0.6s ease-in-out infinite alternate; }
-  .eq-container.playing .eq-bar:nth-child(3n+1) { animation: eqJump 0.8s ease-in-out infinite alternate; }
-  .eq-container.playing .eq-bar:nth-child(4n+2) { animation: eqJump 0.5s ease-in-out infinite alternate; }
-  
-  @keyframes eqJump { 0% { height: 3px; background: var(--neon); } 100% { height: 28px; background: var(--neon2); } }
-
-  .time-stamp { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--neon2); min-width: 75px; text-align: right; }
-  
-  .video-render-box { width: 100%; max-height: 280px; border-radius: 4px; background: #000; display: none; margin-top: 8px; border: 1px solid rgba(57,255,20,0.1); }
-  .video-render-box.show { display: block; }
-
-  .history-list { display: flex; flex-direction: column; gap: 12px; }
-  .history-item { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; display: flex; gap: 14px; align-items: center; }
-  .history-item:hover { border-color: var(--border-hot); }
-  .history-info { flex: 1; min-width: 0; }
-  .history-title { font-size: 13px; font-weight: 500; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .history-date { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px; }
-  .history-action-btn { background: rgba(0,245,255,0.08); border: 1px solid var(--neon2); padding: 6px 12px; border-radius: 4px; color: var(--neon2); font-family: 'Share Tech Mono', monospace; font-size: 11px; cursor: pointer; }
-  .empty-history { font-family: 'Share Tech Mono', monospace; color: var(--muted); text-align: center; padding: 40px 0; }
-
-  footer { text-align: center; padding: 48px 0 0; font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 2px; }
-  footer b { color: var(--neon); font-weight: 400; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="badge"><div class="badge-dot"></div> AMOGENZ · DOWNLOADER · v4.6</div>
-    <h1>AMO<span class="accent">DL</span></h1>
-    <p class="sub">// SMART PREVIEW ROUTER & ANTI-DUPLICATE SYSTEM //</p>
-  </header>
 
-  <div class="nav-tabs">
-    <button class="nav-btn active" onclick="switchPanel('downloader')">[-] DOWNLOADER</button>
-    <button class="nav-btn" onclick="switchPanel('history')">[-] GLOBAL HISTORY</button>
-  </div>
-
-  <div id="panel-downloader" class="panel active">
-    <div class="input-card">
-      <span class="input-label">TARGET SOURCE URL</span>
-      <div class="input-row">
-        <input type="text" id="urlInput" class="url-input" placeholder="Paste YouTube, Instagram, FB link di sini...">
-        <button class="paste-btn" onclick="handlePaste()">PASTE</button>
+  <!-- Top Apple Fixed Navigation Bar -->
+  <nav>
+    <div class="nav-container">
+      <div style="font-weight:600; font-size:16px; color: var(--text-primary);">AMODL</div>
+      <div class="nav-tabs">
+        <button class="nav-link active" onclick="switchPanel('downloader')">Downloader</button>
+        <button class="nav-link" onclick="switchPanel('history')">History</button>
       </div>
     </div>
-    <button id="fetchBtn" class="fetch-btn" onclick="fetchMediaInfo()">⚡ ANALYZE URL</button>
+  </nav>
 
-    <div id="loadingEl" class="loading">
-      <div class="spinner-ring"></div>
-      <div class="loading-txt">PARSING SYSTEM TARGET MODULE...</div>
-    </div>
+  <div class="main-container">
+    <header>
+      <h1>Video and audio. <span style="color: var(--text-secondary);">Directly yours.</span></h1>
+      <p class="subtitle">Minimalist interface for processing files cleanly.</p>
+    </header>
 
-    <div id="errorBox" class="error-box"></div>
-
-    <div id="resultCard" class="result-card">
-      <div class="media-header">
-        <div class="media-meta">
-          <div class="meta-title" id="metaTitle">Media Title Loading...</div>
-          <div class="meta-platform" id="metaPlatform">PLATFORM</div>
+    <!-- Downloader Core Panel -->
+    <div id="panel-downloader" class="panel active">
+      <div class="apple-card">
+        <div class="form-group">
+          <label class="input-label">Enter Media Web Link</label>
+          <div class="input-wrapper">
+            <input type="text" id="urlInput" class="apple-input" placeholder="Paste link video YouTube, IG, atau FB di sini...">
+            <button class="btn-secondary" onclick="handlePaste()">Paste</button>
+          </div>
         </div>
+        <button id="fetchBtn" class="btn-primary" onclick="fetchMediaInfo()">Analyze</button>
       </div>
 
-      <div class="section">
-        <div class="sec-label">⚡ LIVE PREVIEW STREAM (INTELLIGENT ROUTER)</div>
-        <div class="preview-box" id="previewContainer">
-          
-          <audio id="hiddenAudioPlayer" style="display:none;"></audio>
-          
-          <div id="previewStatus" style="color: var(--muted); font-size: 11px; font-family: 'Share Tech Mono';">Select format to engage preview stream...</div>
-          
-          <div class="cyber-player" id="cyberPlayerUI">
-            <div class="player-main-row">
-              <button class="play-pause-btn" id="customPlayBtn" onclick="toggleCyberPlayer()">▶</button>
+      <div id="loadingEl" class="loading-container">
+        <div class="loading-spinner"></div>
+        <div style="font-size:14px; color: var(--text-secondary); margin-top:12px;">Connecting to media matrix...</div>
+      </div>
+
+      <div id="errorBox" class="apple-error-box"></div>
+
+      <!-- Result Section Deck -->
+      <div id="resultCard" class="result-deck">
+        <div class="apple-card">
+          <div class="media-platform" id="metaPlatform">PLATFORM DETECTED</div>
+          <div class="media-title" id="metaTitle">Loading Content Title...</div>
+
+          <hr style="border:0; border-top:1px solid var(--border-light); margin:32px 0;">
+
+          <!-- Live Preview Arena Custom Integration -->
+          <div class="form-group">
+            <label class="input-label">Stream Preview Component</label>
+            <div class="preview-wrapper-box">
+              <audio id="hiddenAudioPlayer" style="display:none;"></audio>
+              <div id="previewStatus" style="color: var(--text-secondary); font-size: 14px;">Select content specification array...</div>
               
-              <div class="eq-container" id="eqVisualizer">
-                <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
-                <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
-                <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+              <div class="apple-player-ui" id="cyberPlayerUI">
+                <div class="player-control-row">
+                  <button class="apple-play-btn" id="customPlayBtn" onclick="toggleCyberPlayer()">▶</button>
+                  
+                  <!-- FIX MUTLAK: Hanya terlihat saat mode format MP3 bray -->
+                  <div class="apple-eq-bars-container" id="eqVisualizer">
+                    <div class="apple-eq-bar"></div><div class="apple-eq-bar"></div><div class="apple-eq-bar"></div>
+                    <div class="apple-eq-bar"></div><div class="apple-eq-bar"></div><div class="apple-eq-bar"></div>
+                    <div class="apple-eq-bar"></div><div class="apple-eq-bar"></div><div class="apple-eq-bar"></div>
+                  </div>
+                  
+                  <div class="player-timer" id="customTimeTracker">00:00</div>
+                </div>
+                <!-- Mode video murni bawaan HTML5 tanpa equalisasi double suara -->
+                <video class="apple-video-window" id="customVideoBox" playsinline controls></video>
               </div>
-              
-              <div class="time-stamp" id="customTimeTracker">00:00</div>
             </div>
-            <video class="video-render-box" id="customVideoBox" playsinline></video>
           </div>
 
+          <hr style="border:0; border-top:1px solid var(--border-light); margin:32px 0;">
+
+          <div class="form-group">
+            <label class="input-label">Specifications Available</label>
+            <div class="format-grid" id="fmtGrid"></div>
+          </div>
+
+          <hr style="border:0; border-top:1px solid var(--border-light); margin:32px 0;">
+
+          <div class="form-group" style="margin-bottom:0;">
+            <div class="progress-bar-container" id="progWrap">
+              <div class="progress-bar-fill" id="progFill"></div>
+            </div>
+            <button id="dlBtn" class="btn-primary" onclick="triggerDownload()">Download Now</button>
+          </div>
         </div>
       </div>
+    </div>
 
-      <div class="section">
-        <div class="sec-label">SELECT STREAM FORMAT</div>
-        <div class="fmt-grid" id="fmtGrid"></div>
-      </div>
-
-      <div class="section">
-        <div class="prog-wrap" id="progWrap"><div class="prog-fill" id="progFill"></div></div>
-        <button id="dlBtn" class="dl-btn" onclick="triggerDownload()">↓ DOWNLOAD NOW</button>
+    <!-- History Panel Area -->
+    <div id="panel-history" class="panel">
+      <div class="history-stack" id="historyListContainer">
+        <div style="text-align:center; color: var(--text-secondary); padding:40px 0;">Syncing cloud data arrays...</div>
       </div>
     </div>
+
+    <p class="footer-copyright">Copyright &copy; 2026 Bani Ibrahim Operations. All rights reserved.</p>
   </div>
 
-  <div id="panel-history" class="panel">
-    <div class="input-card">
-      <span class="input-label">// GLOBAL CLOUD REALTIME LOGS (ANTI-DUPLICATE)</span>
-      <div class="history-list" id="historyListContainer">
-        <div class="empty-history">FETCHING NETWORK RECORDS...</div>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    <p>POWERED BY <b>BANI IBRAHIM WORKSHOP</b> &copy; 2026</p>
-  </footer>
-</div>
-
+<!-- Firebase Modular Architecture Script Integration -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -296,17 +523,17 @@
     try {
       const cleanKey = generateSafeKey(url);
       const logRef = ref(db, `downloader_history/${cleanKey}`);
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-      const formattedDate = new Date().toLocaleDateString('id-ID', options) + " WIB";
+      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      const formattedDate = new Date().toLocaleDateString('id-ID', options);
 
       await set(logRef, {
-        title: title || "Unknown Title",
+        title: title || "Content Item",
         url: url,
-        platform: platform || "unknown",
+        platform: platform || "net",
         timestamp: Date.now(),
         dateStr: formattedDate
       });
-    } catch (e) { console.error("Firebase Sync Error:", e); }
+    } catch (e) { console.error("Database cloud error rejected:", e); }
   };
 
   const historyRef = ref(db, 'downloader_history');
@@ -314,7 +541,7 @@
     const container = document.getElementById('historyListContainer');
     if (!container) return;
     if (!snapshot.exists()) {
-      container.innerHTML = `<div class="empty-history">NO CLOUD LOGS FOUND.</div>`;
+      container.innerHTML = `<div style="text-align:center; color: var(--text-secondary); padding:40px 0;">No deployment records constructed.</div>`;
       return;
     }
     const data = snapshot.val();
@@ -322,13 +549,13 @@
     container.innerHTML = "";
     sortedList.forEach(item => {
       const itemEl = document.createElement('div');
-      itemEl.className = 'history-item';
+      itemEl.className = 'history-row';
       itemEl.innerHTML = `
-        <div class="history-info">
-          <div class="history-title">${esc(item.title)}</div>
-          <div class="history-date">[${item.platform.toUpperCase()}] • ${item.dateStr}</div>
+        <div>
+          <div class="history-title-text">${esc(item.title)}</div>
+          <div class="history-date-text">${item.platform.toUpperCase()} • ${item.dateStr}</div>
         </div>
-        <button class="history-action-btn" onclick="loadFromHistory('${esc(item.url)}')">INJECT</button>
+        <button class="btn-ghost-apple" onclick="loadFromHistory('${esc(item.url)}')">Inject</button>
       `;
       container.appendChild(itemEl);
     });
@@ -342,7 +569,7 @@ const audioCore = document.getElementById('hiddenAudioPlayer');
 const videoCore = document.getElementById('customVideoBox');
 
 function switchPanel(panelName) {
-  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   if(panelName === 'downloader') {
     document.querySelector("button[onclick=\"switchPanel('downloader')\"]").classList.add('active');
@@ -356,7 +583,7 @@ function switchPanel(panelName) {
 function handlePaste() {
   navigator.clipboard.readText().then(text => {
     document.getElementById('urlInput').value = text;
-  }).catch(() => showError("Gagal membaca clipboard bray."));
+  }).catch(() => showError("Affordance error text clipboard reading blocked."));
 }
 
 function loadFromHistory(url) {
@@ -367,7 +594,7 @@ function loadFromHistory(url) {
 
 async function fetchMediaInfo() {
   const url = document.getElementById('urlInput').value.trim();
-  if (!url) return showError("⚠️ URL tidak boleh kosong bray!");
+  if (!url) return showError("Validation exception: Targeting text URL input is empty.");
 
   setLoading(true);
   hideError();
@@ -377,7 +604,7 @@ async function fetchMediaInfo() {
   try {
     const res = await fetch(`/api/info?url=${encodeURIComponent(url)}`);
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Gagal mengambil data media.");
+    if (!res.ok) throw new Error(data.error || "Remote matrix target unfulfilled.");
 
     currentMediaData = data;
     renderResultCard(data);
@@ -385,46 +612,45 @@ async function fetchMediaInfo() {
     if(window.saveToFirebaseHistory) {
       window.saveToFirebaseHistory(data.title, data.webpage_url || url, data.platform);
     }
-  } catch (err) { showError("❌ " + err.message); }
+  } catch (err) { showError("Error: " + err.message); }
   finally { setLoading(false); }
 }
 
 function renderResultCard(data) {
   document.getElementById('metaTitle').textContent = data.title;
-  document.getElementById('metaPlatform').textContent = `PLATFORM: ${(data.platform || 'UNKNOWN').toUpperCase()}`;
+  document.getElementById('metaPlatform').textContent = `Target platform verified // ${(data.platform || 'unknown')}`;
   
   const grid = document.getElementById('fmtGrid');
   grid.innerHTML = "";
 
   if (!data.formats || data.formats.length === 0) {
-    grid.innerHTML = `<span style="color: var(--neon3)">Format tidak tersedia bray.</span>`;
+    grid.innerHTML = `<span style="color:var(--system-error)">Array listing structural specifications empty.</span>`;
     return;
   }
 
   let highMp3Rendered = false;
   data.formats.forEach((fmt, idx) => {
-    // FIX SINKRONISASI: Konversi param dari info 'mp3' awal langsung memecah opsi tombol kualitas bray
     if (fmt === 'mp3') {
       if(!highMp3Rendered) {
-        createFormatCard(grid, 'mp3_high', '🎵', 'MP3 Paling Bagus (320k)', idx === 0);
-        createFormatCard(grid, 'mp3_std', '🎧', 'MP3 Standar (128k)', false);
+        createFormatCard(grid, 'mp3_high', 'Audio MP3 HQ', 'High Fidelity Pack (320kbps)', idx === 0);
+        createFormatCard(grid, 'mp3_std', 'Audio MP3 Standard', 'Compressed Standard Run (128kbps)', false);
         highMp3Rendered = true;
       }
     } else {
-      let icon = "🎬"; let label = "Video HD";
-      if (fmt === 'video_sd') { icon = "🎞️"; label = "Video SD"; }
-      else if (fmt.includes('image')) { icon = "🖼️"; label = "Gambar"; }
-      createFormatCard(grid, fmt, icon, label, idx === 0 && !highMp3Rendered);
+      let label = "Video Display HD"; let dec = "Merged Audio High Resolution 1080p";
+      if (fmt === 'video_sd') { label = "Video Display SD"; dec = "Compressed Low Resolution 480p"; }
+      else if (fmt.includes('image')) { label = "Static Graphic Artwork"; dec = "Lossless Source Resolution Image"; }
+      createFormatCard(grid, fmt, label, dec, idx === 0 && !highMp3Rendered);
     }
   });
 
   document.getElementById('resultCard').classList.add('show');
 }
 
-function createFormatCard(targetGrid, fmtKey, icon, label, isSelect) {
+function createFormatCard(targetGrid, fmtKey, title, description, isSelect) {
   const card = document.createElement('div');
-  card.className = `fmt-card ${isSelect ? 'sel' : ''}`;
-  card.innerHTML = `<div class="fi">${icon}</div><div class="fb">${fmtKey.toUpperCase()}</div><div class="fd">${label}</div>`;
+  card.className = `format-card ${isSelect ? 'selected' : ''}`;
+  card.innerHTML = `<div class="format-title">${title}</div><div class="format-desc">${description}</div>`;
   card.onclick = () => selectFormat(fmtKey, card);
   targetGrid.appendChild(card);
   if (isSelect) selectFormat(fmtKey, card);
@@ -432,28 +658,29 @@ function createFormatCard(targetGrid, fmtKey, icon, label, isSelect) {
 
 async function selectFormat(fmt, cardEl) {
   selectedFormat = fmt;
-  document.querySelectorAll('.fmt-card').forEach(c => c.classList.remove('sel'));
-  cardEl.classList.add('sel');
+  document.querySelectorAll('.format-card').forEach(c => c.classList.remove('selected'));
+  cardEl.classList.add('selected');
   
   resetCyberPlayer();
   const statusEl = document.getElementById('previewStatus');
   const eqEl = document.getElementById('eqVisualizer');
+  const customPlayBtn = document.getElementById('customPlayBtn');
+  
   statusEl.style.display = 'block';
-  statusEl.innerHTML = `<span style="color: var(--neon2); font-size: 11px; font-family: 'Share Tech Mono';">⏳ TUNING STREAM MODULE...</span>`;
+  statusEl.innerHTML = `<span style="color: var(--blue); font-size:14px;">Tuning system target proxy channel...</span>`;
   
   try {
     const targetUrl = document.getElementById('urlInput').value.trim();
-    
     let formatQuery = fmt;
     if (currentMediaData.platform === 'youtube' && fmt === 'video_hd') {
-      formatQuery = 'video_sd'; // Video preview HD dialihkan ke gabungan SD biar bersuara bray
+      formatQuery = 'video_sd';
     }
 
     const res = await fetch(`/api/download?url=${encodeURIComponent(targetUrl)}&format=${formatQuery}`);
     const streamData = await res.json();
     
     if(!res.ok || !streamData.url) {
-      statusEl.innerHTML = `<span style="color: var(--muted); font-size: 11px; font-family: 'Share Tech Mono';">⚠️ High-res preview restriction. Direct download active.</span>`;
+      statusEl.innerHTML = `<span style="color: var(--text-secondary); font-size: 14px;">Preview restriction applied. Main structural action button remains functional.</span>`;
       return;
     }
     
@@ -463,53 +690,45 @@ async function selectFormat(fmt, cardEl) {
     if (fmt.includes('mp3')) {
       audioCore.src = streamData.url;
       videoCore.classList.remove('show');
-      eqEl.classList.add('show'); // Aktifkan panel equalizer khusus MP3 bray
+      
+      // FIX MUTLAK: Aktifkan equalizer dan tombol play khusus MP3 bray bray bray
+      eqEl.classList.add('show');
+      customPlayBtn.style.display = 'flex';
     } else if (fmt.includes('image')) {
       document.getElementById('cyberPlayerUI').classList.remove('show');
       statusEl.style.display = 'block';
-      statusEl.innerHTML = `<img src="${streamData.url}" style="max-width:100%; max-height:240px; border-radius:4px;" alt="Preview">`;
+      statusEl.innerHTML = `<img src="${streamData.url}" style="max-width:100%; max-height:280px; border-radius:10px; display:block; margin:0 auto;" alt="Source Item">`;
     } else {
-      // MODE VIDEO: Matikan audioCore dan Equalizer biar suara GAK DOUBLE bray
+      // FIX MUTLAK: Video murni tanpa double audio, sembunyikan equalizer dan tombol custom
       audioCore.src = ""; 
-      eqEl.classList.remove('show'); 
+      eqEl.classList.remove('show');
+      customPlayBtn.style.display = 'none';
       
       videoCore.src = streamData.url;
       videoCore.classList.add('show');
     }
   } catch(e) {
-    statusEl.innerHTML = `<span style="color: var(--muted); font-size: 11px; font-family: 'Share Tech Mono';">⚠️ Stream module delay.</span>`;
+    statusEl.innerHTML = `<span style="color: var(--text-secondary); font-size:14px;">Streaming datastream configuration failure.</span>`;
   }
 }
 
-// ── CUSTOM INTEGRATED CYBERPLAYER CONTROL ──
 function toggleCyberPlayer() {
   const btn = document.getElementById('customPlayBtn');
   const eq = document.getElementById('eqVisualizer');
   
-  if (videoCore.classList.contains('show')) {
-    // Jalur kontrol pemutaran Video bray
-    if (videoCore.paused) {
-      videoCore.play();
-      btn.textContent = "█"; btn.style.color = "var(--neon3)";
-    } else {
-      videoCore.pause();
-      btn.textContent = "▶"; btn.style.color = "var(--neon)";
-    }
-  } else {
-    // Jalur kontrol pemutaran Audio MP3 bray
+  if (!videoCore.classList.contains('show')) {
     if (audioCore.paused) {
       audioCore.play();
-      btn.textContent = "█"; btn.style.color = "var(--neon3)";
+      btn.textContent = "█"; btn.style.backgroundColor = "var(--blue-dark)";
       eq.classList.add('playing');
     } else {
       audioCore.pause();
-      btn.textContent = "▶"; btn.style.color = "var(--neon)";
+      btn.textContent = "▶"; btn.style.backgroundColor = "var(--blue)";
       eq.classList.remove('playing');
     }
   }
 }
 
-// Sinkronisasi time tracker tracker durasi
 function updateTimeUI(currentTime) {
   const m = Math.floor(currentTime / 60).toString().padStart(2, '0');
   const s = Math.floor(currentTime % 60).toString().padStart(2, '0');
@@ -531,7 +750,7 @@ function resetCyberPlayer() {
 
 function resetCyberPlayerUIState() {
   const btn = document.getElementById('customPlayBtn');
-  if(btn) { btn.textContent = "▶"; btn.style.color = "var(--neon)"; }
+  if(btn) { btn.textContent = "▶"; btn.style.backgroundColor = "var(--blue)"; }
   const eq = document.getElementById('eqVisualizer');
   if(eq) eq.classList.remove('playing');
   document.getElementById('customTimeTracker').textContent = "00:00";
@@ -545,28 +764,28 @@ async function triggerDownload() {
   const progFill = document.getElementById('progFill');
 
   btn.disabled = true;
-  btn.innerHTML = '⏳ INITIALIZING DOWNLOAD BUFFER...';
+  btn.innerHTML = 'Preparing download allocation...';
   progWrap.style.display = 'block';
-  progFill.style.width = '15%';
+  progFill.style.width = '20%';
 
   try {
     const url = document.getElementById('urlInput').value.trim();
     const res = await fetch(`/api/download?url=${encodeURIComponent(url)}&format=${selectedFormat}`);
     const data = await res.json();
-    if (!res.ok || !data.url) throw new Error(data.error || "Gagal memproses file streaming.");
+    if (!res.ok || !data.url) throw new Error(data.error || "Streaming buffer configuration unreached.");
 
-    progFill.style.width = '45%';
-    btn.innerHTML = '⚡ STREAMING CONTENT DATA TO LOCAL BLOB...';
+    progFill.style.width = '50%';
+    btn.innerHTML = 'Extracting content binary packets...';
 
     const fileRes = await fetch(data.url);
-    if (!fileRes.ok) throw new Error("Gagal mengunduh file langsung dari server asal.");
+    if (!fileRes.ok) throw new Error("Cloud CDN connection failure.");
     
     progFill.style.width = '85%';
     const fileBlob = await fileRes.blob();
     const blobUrl = window.URL.createObjectURL(fileBlob);
 
     progFill.style.width = '100%';
-    btn.innerHTML = '📦 INJECTING TO SYSTEM TARGET DIRECTORY...';
+    btn.innerHTML = 'Injecting file to system directory...';
 
     const a = document.createElement('a');
     a.href = blobUrl;
@@ -578,11 +797,11 @@ async function triggerDownload() {
     document.body.removeChild(a);
 
   } catch (err) {
-    showError('❌ Download Failure: ' + err.message);
+    showError('Process Aborted: ' + err.message);
   } finally {
     setTimeout(() => {
       btn.disabled = false;
-      btn.innerHTML = '↓ DOWNLOAD NOW';
+      btn.innerHTML = 'Download Now';
       progWrap.style.display = 'none';
       progFill.style.width = '0%';
     }, 1500);
@@ -590,9 +809,9 @@ async function triggerDownload() {
 }
 
 function setLoading(show) {
-  document.getElementById('loadingEl').classList.toggle('show', show);
+  document.getElementById('loadingEl').style.display = show ? 'block' : 'none';
   document.getElementById('fetchBtn').disabled = show;
-  document.getElementById('fetchBtn').textContent = show ? '⏳ SCANNING...' : '⚡ ANALYZE URL';
+  document.getElementById('fetchBtn').textContent = show ? 'Running processing layers...' : 'Analyze';
 }
 
 function showError(msg) {
