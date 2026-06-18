@@ -61,7 +61,6 @@
     padding: 20px 16px 80px;
   }
 
-  /* ── Header ── */
   header { text-align: center; padding: 44px 0 20px; }
 
   .badge {
@@ -108,7 +107,6 @@
     margin-top: 10px;
   }
 
-  /* Main Navigation Tabs */
   .nav-tabs {
     display: flex;
     gap: 8px;
@@ -139,14 +137,12 @@
   .panel { display: none; }
   .panel.active { display: block; }
 
-  /* ── Input ── */
   .input-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 14px;
-    transition: border-color .3s;
   }
 
   .input-card:focus-within {
@@ -175,12 +171,10 @@
     font-family: 'Share Tech Mono', monospace;
     font-size: 13px;
     outline: none;
-    transition: border-color .2s;
     min-width: 0;
   }
 
   .url-input::placeholder { color: var(--muted); }
-  .url-input:focus { border-color: var(--neon); }
 
   .paste-btn {
     background: rgba(57,255,20,0.09);
@@ -192,10 +186,7 @@
     font-size: 11px;
     cursor: pointer;
     white-space: nowrap;
-    transition: all .2s;
   }
-
-  .paste-btn:hover { background: rgba(57,255,20,0.18); box-shadow: 0 0 10px rgba(57,255,20,0.2); }
 
   .fetch-btn {
     width: 100%;
@@ -209,14 +200,11 @@
     font-weight: 700;
     letter-spacing: 2px;
     cursor: pointer;
-    transition: all .2s;
     text-transform: uppercase;
   }
 
-  .fetch-btn:hover { box-shadow: 0 0 30px rgba(57,255,20,0.45); }
   .fetch-btn:disabled { opacity: .45; cursor: not-allowed; }
 
-  /* ── Loading & Error ── */
   .loading { display: none; text-align: center; padding: 44px; }
   .loading.show { display: block; }
   .spinner-ring {
@@ -237,19 +225,18 @@
   }
   .error-box.show { display: block; }
 
-  /* ── Result Card ── */
   .result-card {
     display: none; background: var(--card); border: 1px solid var(--border); border-radius: 10px;
-    overflow: hidden; margin-top: 14px; animation: fadeUp .3s ease;
+    overflow: hidden; margin-top: 14px;
   }
   .result-card.show { display: block; }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
   .media-header { display: flex; gap: 16px; padding: 20px; border-bottom: 1px solid var(--border); }
   .thumb-wrap { flex-shrink: 0; width: 130px; }
   .thumb-wrap img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); }
   .media-meta { flex: 1; min-width: 0; }
   .meta-title { font-size: 14px; font-weight: 600; color: #e8ffe8; margin-bottom: 10px; }
+  .meta-platform { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--neon2); }
 
   .section { padding: 20px; border-bottom: 1px solid var(--border); }
   .sec-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--neon); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
@@ -262,14 +249,19 @@
   }
   .fmt-card.sel { background: rgba(57,255,20,0.09); border-color: var(--neon); color: var(--neon); }
 
+  /* Progress Bar UI */
+  .prog-wrap { display: none; margin-bottom: 12px; background: var(--bg2); border: 1px solid var(--border); height: 12px; border-radius: 4px; overflow: hidden; }
+  .prog-wrap.show { display: block; }
+  .prog-fill { background: linear-gradient(90deg, var(--neon), var(--neon2)); width: 0%; height: 100%; transition: width 0.1s ease; }
+
   .dl-btn {
     width: 100%; padding: 16px; background: transparent; border: 1px solid var(--neon);
     border-radius: 8px; color: var(--neon); font-family: 'Orbitron', sans-serif; font-size: 13px;
     font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
   }
   .dl-btn:hover { background: rgba(57,255,20,0.1); box-shadow: 0 0 22px rgba(57,255,20,0.2); }
+  .dl-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  /* Preview Components */
   .preview-box {
     background: #000; border: 1px dashed var(--border-hot); border-radius: 6px;
     padding: 10px; display: flex; justify-content: center; align-items: center; min-height: 60px;
@@ -278,11 +270,10 @@
   .preview-box audio { width: 100%; }
   .preview-box img { max-width: 100%; max-height: 300px; object-fit: contain; border-radius: 4px; }
 
-  /* ── History Panel UI ── */
   .history-list { display: flex; flex-direction: column; gap: 12px; }
   .history-item {
     background: var(--card); border: 1px solid var(--border); border-radius: 8px;
-    padding: 14px; display: flex; gap: 14px; align-items: center; transition: all .2s;
+    padding: 14px; display: flex; gap: 14px; align-items: center;
   }
   .history-item:hover { border-color: var(--border-hot); }
   .history-thumb { width: 80px; aspect-ratio: 16/9; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); }
@@ -294,7 +285,6 @@
     border-radius: 4px; color: var(--neon2); font-family: 'Share Tech Mono', monospace; font-size: 11px;
     cursor: pointer;
   }
-  .history-action-btn:hover { background: rgba(0,245,255,0.2); }
   .empty-history { font-family: 'Share Tech Mono', monospace; color: var(--muted); text-align: center; padding: 40px 0; }
 
   footer { text-align: center; padding: 48px 0 0; font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 2px; }
@@ -304,9 +294,9 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="badge"><div class="badge-dot"></div> AMOGENZ · DOWNLOADER · v4.0</div>
+    <div class="badge"><div class="badge-dot"></div> AMOGENZ · DOWNLOADER · v4.1</div>
     <h1>AMO<span class="accent">DL</span></h1>
-    <p class="sub">// MULTIMEDIA ENGINE + GLOBAL HISTORY //</p>
+    <p class="sub">// DIRECT BLOB STREAM ENGINE + CLOUD RECON //</p>
   </header>
 
   <div class="nav-tabs">
@@ -337,15 +327,15 @@
           <img id="metaThumb" src="" alt="Thumbnail">
         </div>
         <div class="media-meta">
-          <div class="meta-platform" id="metaPlatform">PLATFORM</div>
           <div class="meta-title" id="metaTitle">Media Title Loading...</div>
+          <div class="meta-platform" id="metaPlatform">PLATFORM</div>
         </div>
       </div>
 
       <div class="section">
-        <div class="sec-label">⚡ LIVE PREVIEW STREAM (BEFORE DOWNLOAD)</div>
+        <div class="sec-label">⚡ LIVE PREVIEW STREAM (WITH AUDIO HARMONIZER)</div>
         <div class="preview-box" id="previewContainer">
-          <span style="color: var(--muted); font-size: 11px; font-family: 'Share Tech Mono';">Select format to render live stream...</span>
+          <span style="color: var(--muted); font-size: 11px; font-family: 'Share Tech Mono';">Select format to render audio/video preview...</span>
         </div>
       </div>
 
@@ -355,6 +345,7 @@
       </div>
 
       <div class="section">
+        <div class="prog-wrap" id="progWrap"><div class="prog-fill" id="progFill"></div></div>
         <button id="dlBtn" class="dl-btn" onclick="triggerDownload()">↓ DOWNLOAD NOW</button>
       </div>
     </div>
@@ -388,16 +379,13 @@
     appId: "1:232969804928:web:915eeac683fd59b874da65"
   };
 
-  // Init Firebase
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // Expose save & render handlers to global window context
   window.saveToFirebaseHistory = function(title, url, thumbnail, platform) {
     try {
       const historyRef = ref(db, 'downloader_history');
       const newLogRef = push(historyRef);
-      
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
       const formattedDate = new Date().toLocaleDateString('id-ID', options) + " WIB";
 
@@ -409,33 +397,24 @@
         timestamp: Date.now(),
         dateStr: formattedDate
       });
-    } catch (e) {
-      console.error("Firebase Log Error: ", e);
-    }
+    } catch (e) { console.error("Firebase database error:", e); }
   };
 
-  // Realtime listener history cloud
   const historyRef = ref(db, 'downloader_history');
   onValue(historyRef, (snapshot) => {
     const container = document.getElementById('historyListContainer');
     if (!container) return;
-    
     if (!snapshot.exists()) {
       container.innerHTML = `<div class="empty-history">NO CLOUD LOGS FOUND.</div>`;
       return;
     }
-
     const data = snapshot.val();
-    // Convert object list to array and sort by descending timestamp
     const sortedList = Object.values(data).sort((a, b) => b.timestamp - a.timestamp);
-    
     container.innerHTML = "";
     sortedList.forEach(item => {
       const itemEl = document.createElement('div');
       itemEl.className = 'history-item';
-      
       const thumbSrc = item.thumbnail || 'https://placehold.co/160x90/0d1a0d/39FF14?text=AMO+DL';
-      
       itemEl.innerHTML = `
         <img class="history-thumb" src="${thumbSrc}" alt="thumb">
         <div class="history-info">
@@ -450,14 +429,12 @@
 </script>
 
 <script>
-// ── Global Variables ──
 let currentMediaData = null;
 let selectedFormat = null;
 
 function switchPanel(panelName) {
   document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  
   if(panelName === 'downloader') {
     document.querySelector("button[onclick=\"switchPanel('downloader')\"]").classList.add('active');
     document.getElementById('panel-downloader').classList.add('active');
@@ -470,9 +447,7 @@ function switchPanel(panelName) {
 function handlePaste() {
   navigator.clipboard.readText().then(text => {
     document.getElementById('urlInput').value = text;
-  }).catch(() => {
-    showError("Gagal membaca clipboard. Silakan paste manual bray.");
-  });
+  }).catch(() => showError("Gagal membaca clipboard bray."));
 }
 
 function loadFromHistory(url) {
@@ -493,62 +468,44 @@ async function fetchMediaInfo() {
   try {
     const res = await fetch(`/api/info?url=${encodeURIComponent(url)}`);
     const data = await res.json();
-
     if (!res.ok) throw new Error(data.error || "Gagal mengambil data media.");
 
     currentMediaData = data;
     renderResultCard(data);
     
-    // Kirim Log Logika ke Firebase
     if(window.saveToFirebaseHistory) {
       window.saveToFirebaseHistory(data.title, data.webpage_url || url, data.thumbnail, data.platform);
     }
-
-  } catch (err) {
-    showError("❌ " + err.message);
-  } finally {
-    setLoading(false);
-  }
+  } catch (err) { showError("❌ " + err.message); }
+  finally { setLoading(false); }
 }
 
 function renderResultCard(data) {
   document.getElementById('metaTitle').textContent = data.title;
-  document.getElementById('metaPlatform').textContent = data.platform || "UNKNOWN";
-  
-  const img = document.getElementById('metaThumb');
-  img.src = data.thumbnail || '';
+  document.getElementById('metaPlatform').textContent = `PLATFORM: ${(data.platform || 'UNKNOWN').toUpperCase()}`;
+  document.getElementById('metaThumb').src = data.thumbnail || '';
   
   const grid = document.getElementById('fmtGrid');
   grid.innerHTML = "";
 
   if (!data.formats || data.formats.length === 0) {
-    grid.innerHTML = `<span style="color: var(--neon3)">Format tidak tersedia.</span>`;
+    grid.innerHTML = `<span style="color: var(--neon3)">Format tidak tersedia bray.</span>`;
     return;
   }
 
-  // Render formats list
   data.formats.forEach((fmt, idx) => {
     const card = document.createElement('div');
     card.className = `fmt-card ${idx === 0 ? 'sel' : ''}`;
-    
-    let icon = "🎬";
-    let label = "Video HD";
+    let icon = "🎬"; let label = "Video HD";
     if (fmt === 'mp3') { icon = "🎵"; label = "Audio MP3"; }
-    else if (fmt === 'video_sd') { icon = "🎞️"; label = "Video SD"; }
+    else if (fmt === 'video_sd') { icon = "🎞️"; label = "Video Muted/SD"; }
     else if (fmt.includes('image')) { icon = "🖼️"; label = "Gambar"; }
 
-    card.innerHTML = `
-      <div class="fi">${icon}</div>
-      <div class="fb">${fmt.toUpperCase()}</div>
-      <div class="fd">${label}</div>
-    `;
-    
+    card.innerHTML = `<div class="fi">${icon}</div><div class="fb">${fmt.toUpperCase()}</div><div class="fd">${label}</div>`;
     card.onclick = () => selectFormat(fmt, card);
     grid.appendChild(card);
     
-    if (idx === 0) {
-      selectFormat(fmt, card);
-    }
+    if (idx === 0) selectFormat(fmt, card);
   });
 
   document.getElementById('resultCard').classList.add('show');
@@ -560,20 +517,25 @@ async function selectFormat(fmt, cardEl) {
   cardEl.classList.add('sel');
   
   const previewBox = document.getElementById('previewContainer');
-  previewBox.innerHTML = `<span style="color: var(--neon2); font-size: 11px; font-family: 'Share Tech Mono';">⏳ GENERATING PREVIEW CONFIG...</span>`;
+  previewBox.innerHTML = `<span style="color: var(--neon2); font-size: 11px; font-family: 'Share Tech Mono';">⏳ CONNECTING STREAM SYNC...</span>`;
   
-  // Tembak server untuk dapetin direct url buat di-preview
   try {
     const targetUrl = document.getElementById('urlInput').value.trim();
-    const res = await fetch(`/api/download?url=${encodeURIComponent(targetUrl)}&format=${fmt}`);
+    
+    // Khusus YouTube Video HD agar ada suaranya di preview, kita fallback ke stream info audio mp3/audio gabungan
+    let formatQuery = fmt;
+    if (currentMediaData.platform === 'youtube' && fmt === 'video_hd') {
+      formatQuery = 'video_sd'; // Mode SD gabungan audio-video terpadu bray
+    }
+
+    const res = await fetch(`/api/download?url=${encodeURIComponent(targetUrl)}&format=${formatQuery}`);
     const streamData = await res.json();
     
     if(!res.ok || !streamData.url) {
-      previewBox.innerHTML = `<span style="color: var(--muted); font-size: 11px; font-family: 'Share Tech Mono';">⚠️ Preview unavailable for this resolution, direct download still works.</span>`;
+      previewBox.innerHTML = `<span style="color: var(--muted); font-size: 11px; font-family: 'Share Tech Mono';">⚠️ High-res preview restriction. Direct download button still functional.</span>`;
       return;
     }
     
-    // Render media base on stream format
     if (fmt === 'mp3') {
       previewBox.innerHTML = `<audio controls src="${streamData.url}" preload="metadata"></audio>`;
     } else if (fmt.includes('image')) {
@@ -582,63 +544,78 @@ async function selectFormat(fmt, cardEl) {
       previewBox.innerHTML = `<video controls src="${streamData.url}" preload="metadata" playsinline></video>`;
     }
   } catch(e) {
-    previewBox.innerHTML = `<span style="color: var(--muted); font-size: 11px; font-family: 'Share Tech Mono';">⚠️ Connection limit, skip streaming module.</span>`;
+    previewBox.innerHTML = `<span style="color: var(--muted); font-size: 11px; font-family: 'Share Tech Mono';">⚠️ Preview timeout.</span>`;
   }
 }
 
+// Fitur BLOB DIRECT DOWNLOADER (Anti Buka Tab Baru)
 async function triggerDownload() {
   if (!currentMediaData || !selectedFormat) return;
 
   const btn = document.getElementById('dlBtn');
-  const originText = btn.innerHTML;
+  const progWrap = document.getElementById('progWrap');
+  const progFill = document.getElementById('progFill');
+
   btn.disabled = true;
-  btn.innerHTML = '⏳ GENERATING DIRECT BLOB LINK...';
+  btn.innerHTML = '⏳ INITIALIZING DOWNLOAD BUFFER...';
+  progWrap.class = 'prog-wrap show';
+  progWrap.style.display = 'block';
+  progFill.style.width = '15%';
 
   try {
     const url = document.getElementById('urlInput').value.trim();
     const res = await fetch(`/api/download?url=${encodeURIComponent(url)}&format=${selectedFormat}`);
     const data = await res.json();
+    if (!res.ok || !data.url) throw new Error(data.error || "Gagal memproses file streaming server.");
 
-    if (!res.ok) throw new Error(data.error || "Gagal memproses file download.");
+    progFill.style.width = '45%';
+    btn.innerHTML = '⚡ DOWNLOADING FILE TO LOCAL STORAGE...';
 
-    // Direct Anchor deployment method bray
+    // Ambil file asli pakai bypass proxy blob bray
+    const fileRes = await fetch(data.url);
+    if (!fileRes.ok) throw new Error("Gagal mengunduh data stream dari CDN utama.");
+    
+    progFill.style.width = '85%';
+    const fileBlob = await fileRes.blob();
+    const blobUrl = window.URL.createObjectURL(fileBlob);
+
+    progFill.style.width = '100%';
+    btn.innerHTML = '📦 INJECTING TO SYSTEM DIRECTORY...';
+
     const a = document.createElement('a');
-    a.href = data.url;
-    a.download = data.filename || 'download';
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
+    a.href = blobUrl;
+    a.download = data.filename || 'amo-download.mp4';
     document.body.appendChild(a);
     a.click();
+    
+    // Bersihkan memori blob browser
+    window.URL.revokeObjectURL(blobUrl);
     document.body.removeChild(a);
 
   } catch (err) {
-    showError('❌ Download Gagal: ' + err.message);
+    showError('❌ Download Failure: ' + err.message);
   } finally {
-    btn.disabled = false;
-    btn.innerHTML = originText;
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.innerHTML = '↓ DOWNLOAD NOW';
+      progWrap.style.display = 'none';
+      progFill.style.width = '0%';
+    }, 1500);
   }
 }
 
 function setLoading(show) {
   document.getElementById('loadingEl').classList.toggle('show', show);
-  const btn = document.getElementById('fetchBtn');
-  btn.disabled = show;
-  btn.textContent = show ? '⏳ SCANNING...' : '⚡ ANALYZE URL';
+  document.getElementById('fetchBtn').disabled = show;
+  document.getElementById('fetchBtn').textContent = show ? '⏳ SCANNING...' : '⚡ ANALYZE URL';
 }
 
 function showError(msg) {
   const b = document.getElementById('errorBox');
-  b.textContent = msg;
-  b.classList.add('show');
+  b.textContent = msg; b.classList.add('show');
 }
-
-function hideError() {
-  document.getElementById('errorBox').classList.remove('show');
-}
-
-function esc(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function hideError() { document.getElementById('errorBox').classList.remove('show'); }
+function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 </script>
 </body>
 </html>
