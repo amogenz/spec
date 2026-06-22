@@ -113,7 +113,7 @@
   @keyframes pulse-neon { 0%, 100% { box-shadow: 0 0 4px #39FF14; opacity: 1; } 50% { box-shadow: 0 0 12px #39FF14; opacity: 0.6; } }
   .visitor-text { font-family: var(--font-ui); font-size: var(--type-caption); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.04em; }
 
-  h1.brand-hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 7vw, var(--type-display-xl)); color: var(--color-text-primary); line-height: 1.1; margin-bottom: 8px; }
+  h1.brand-hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 7vw, var(--type-display-xl)); color: var(--text-primary, #FFFFFF); line-height: 1.1; margin-bottom: 8px; }
   h1.brand-hero-title span.neon-glow { color: var(--color-text-accent); animation: neon-flicker 4s infinite; }
   @keyframes neon-flicker { 0%, 100% { text-shadow: 0 0 8px #39FF14; opacity: 1; } 92% { text-shadow: 0 0 8px #39FF14; opacity: 1; } 93% { text-shadow: none; opacity: 0.5; } 94% { text-shadow: 0 0 8px #39FF14; opacity: 1; } 96% { text-shadow: none; opacity: 0.3; } 97% { text-shadow: 0 0 16px #39FF14; opacity: 1; } }
   .subtitle-branding-desc { font-size: 11px; color: var(--color-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
@@ -158,7 +158,7 @@
   .cyberplayer-container-box { background-color: var(--color-bg-elevated); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); padding: 16px; position: relative; }
   .cyberplayer-interface-deck { display: none; align-items: center; gap: 12px; flex-wrap: wrap; }
   .cyberplayer-interface-deck.show { display: flex; }
-  .player-trigger-circular-btn { background: transparent; border: 1px solid var(--color-border-accent); width: 40px; height: 40px; border-radius: 50%; color: var(--color-text-accent); cursor: pointer; display: flex; align-items: center; justify-content: center; outline: none; flex-shrink: 0; }
+  .player-trigger-circular-btn { background: transparent; border: 1px solid var(--color-border-accent); width: 40px; height: 40px; border-radius: 50%; color: var(--text-accent, #39FF14); cursor: pointer; display: flex; align-items: center; justify-content: center; outline: none; flex-shrink: 0; }
   .player-trigger-circular-btn:hover { background: var(--color-action-ghost-hover); box-shadow: var(--shadow-neon-sm); }
 
   .equalizer-neon-glow-flex { display: none; flex: 1; height: 32px; align-items: flex-end; gap: 3px; border-bottom: 1px solid var(--color-border-default); overflow: hidden; padding-bottom: 2px; min-width: 80px; }
@@ -331,7 +331,7 @@
         timestamp: Date.now(),
         dateStr: formattedDate
       });
-    } catch (e) { console.error("Firebase payload error:", e); }
+    } catch (e) { console.error("Firebase error:", e); }
   };
 
   const historyRef = ref(db, 'downloader_history');
@@ -385,11 +385,10 @@
 <script>
 let currentMediaData = null;
 let selectedFormat = null;
-let lastKnownLink = ""; // Trik UX pencegahan efek nyangkut bray bray bray
+let lastKnownLink = "";
 const audioCore = document.getElementById('hiddenAudioPlayer');
 const videoCore = document.getElementById('customVideoBox');
 
-// ── TRIK RESET TOMBOL OTOMATIS ALA ENGINE NADIM ──
 setInterval(() => {
   const linkInput = document.getElementById('urlInput');
   const fetchBtn = document.getElementById('fetchBtn');
@@ -397,7 +396,6 @@ setInterval(() => {
     let currentValue = linkInput.value.trim();
     if (currentValue !== lastKnownLink) {
       lastKnownLink = currentValue;
-      // Jika input box berubah isinya, kembalikan tombol ke status awal bray
       if (fetchBtn.textContent.includes('RUNNING') || fetchBtn.disabled) {
          fetchBtn.disabled = false;
          fetchBtn.textContent = "⚡ ANALYZE TARGET";
@@ -487,7 +485,6 @@ function renderResultCard(data) {
     }
   });
 
-  // Proteksi jika sirkuit universal link menghasilkan card, picu klik card pertama bray
   const firstCard = grid.querySelector('.spec-selection-card');
   if (firstCard) firstCard.click();
 
@@ -639,7 +636,6 @@ async function triggerDownload() {
     window.URL.revokeObjectURL(blobUrl);
     document.body.removeChild(a);
   } catch (err) {
-    // FALLBACK LINK DIRECT DOWNLOAD JIKA CONVERT BLOB CORS DI BLOKIR BROWSER HP bray bray bray
     try {
       let fallbackUrl = currentMediaData.url || document.getElementById('urlInput').value.trim();
       const a = document.createElement('a');
@@ -666,9 +662,8 @@ function setLoading(show) {
   document.getElementById('fetchBtn').textContent = show ? '⏳ RUNNING ANALYSIS FLOW...' : '⚡ ANALYZE TARGET';
 }
 function showError(msg) { const b = document.getElementById('errorBox'); b.textContent = msg; b.classList.add('show'); }
-function hideError() { document.getElementById('errorBox').classList.remove('remove'); document.getElementById('errorBox').style.display='none'; }
+function hideError() { const b = document.getElementById('errorBox'); b.classList.remove('show'); }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 </script>
 </body>
-  
 </html>
