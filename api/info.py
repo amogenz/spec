@@ -1,7 +1,9 @@
 import os
 import sys
 import json
+import re
 import subprocess
+import urllib.request
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -14,7 +16,6 @@ def parse_formats(info):
     has_image = False
 
     extractor = info.get("extractor_key", "").lower()
-    
     raw_formats = info.get("formats", [])
     for f in raw_formats:
         vcodec = f.get("vcodec", "none")
@@ -48,15 +49,42 @@ def parse_formats(info):
 
     return list(set(formats))
 
+def scrape_pinterest_image_fallback(url):
+    """Scraper darurat mengekstrak direct link image HD langsung dari HTML meta Pinterest bray"""
+    try:
+        req = urllib.request.Request(
+            url, 
+            headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
+        )
+        html = urllib.request.urlopen(req, timeout=10).read().decode('utf-8')
+        
+        # Cari tag meta og:image bawaan Pinterest bray
+        match = re.search(r'<meta[^>]*property=["\']og:image["\'][^>]*content=["\']([^"\']+)["\']', html)
+        if match:
+            return match.group(1)
+            
+        # Fallback regex kedua jika pola meta berbeda bray
+        match2 = re.search(r'<meta[^>]*content=["\']([^"\']+)["\'][^>]*property=["\']og:image["\']', html)
+        if match2:
+            return match2.group(1)
+            
+        # Taktik tebak resolusi gambar dari ID Pin jika regex gagal bray
+        pin_id_match = re.search(r'pin/(\d+)', url)
+        if pin_id_match:
+            pin_id = pin_id_match.group(1)
+            return f"https://i.pinimg.com/originals/{pin_id[:2]}/{pin_id[2:4]}/{pin_id[4:6]}/{pin_id}.jpg"
+    except:
+        pass
+    return None
+
 @app.route('/api/info', methods=['GET'])
 def info_handler():
     url = request.args.get('url')
     if not url:
         return jsonify({"error": "Missing URL parameter"}), 400
 
-    # Interseptor Darurat: Kalau link pinterest, langsung bypass cek awal jika terindikasi eror bray
+    # ── INTERSEPTOR PRESET PINTEREST ANTI WEB-REDIRECT ──
     if "pinterest.com" in url.lower() or "pin.it" in url.lower():
-        # Kita coba jalankan dengan taktik ignore-errors bray
         cookies_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'cookies.txt')
         cmd = [
             sys.executable, "-m", "yt_dlp",
@@ -70,11 +98,17 @@ def info_handler():
         if os.path.exists(cookies_path):
             cmd.extend(["--cookies", cookies_path])
             
+        direct_img_url = None
         try:
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=25)
             if result.returncode == 0 and result.stdout.strip():
                 meta = json.loads(result.stdout.split('\n')[0])
-                direct_url = meta.get("url") or meta.get("direct_url") or meta.get("thumbnail") or url
+                direct_url = meta.get("url") or meta.get("direct_url") or meta.get("thumbnail")
+                
+                # Jika link masih mengarah ke domain pinterest biasa, paksa bongkar html-nya bray bray bray
+                if not direct_url or "pinterest.com" in direct_url or "pin.it" in direct_url:
+                    direct_url = scrape_pinterest_image_fallback(url) or direct_url
+
                 payload = {
                     "title": meta.get("title") or "Pinterest Premium Asset",
                     "platform": "pinterest",
@@ -86,12 +120,13 @@ def info_handler():
         except:
             pass
             
-        # Hard Fallback khusus Pinterest Image / Tipe Pin Foto bray bray bray
+        # Hard Fallback jika yt-dlp diblokir total, kita gunakan sirkuit open-graph parser bray
+        direct_img_url = scrape_pinterest_image_fallback(url) or url
         return jsonify({
-            "title": f"Pinterest Asset [ID: {url.split('/')[-1] or 'Premium'}]",
+            "title": "Pinterest Static Artwork",
             "platform": "pinterest",
             "webpage_url": url,
-            "url": url,
+            "url": direct_img_url,
             "formats": ["image_jpg"]
         }), 200
 
@@ -111,8 +146,6 @@ def info_handler():
 
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=25)
-        
-        # Jika yt-dlp gagal memproses link platform lain bray
         if result.returncode != 0 or not result.stdout.strip():
             raise Exception(result.stderr or "Target core stream extraction drop.")
 
