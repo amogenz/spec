@@ -612,13 +612,36 @@ async function triggerDownload() {
 
     const res = await fetch(`/api/download?url=${encodeURIComponent(url)}&format=${formatQuery}`);
     const data = await res.json();
-    if (!res.ok || !data.url) throw new Error(data.error || "Allocation target datastream pipeline drop.");
+    
+    let targetStreamUrl = (data && data.url) ? data.url : currentMediaData.url;
+    let finalFileName = (data && data.filename) ? data.filename : `amogenz_media_${Date.now()}.jpg`;
+
+    if (!targetStreamUrl || targetStreamUrl.includes('pinterest.com') || targetStreamUrl === url) {
+       throw new Error("REDIRECT_BLOCKED_BY_CORS");
+    }
 
     progFill.style.width = '50%';
     btn.innerHTML = '⚡ PARSING BLOB SEGMENTS FROM TARGET LOGS...';
 
-    const fileRes = await fetch(data.url);
-    if (!fileRes.ok) throw new Error("Remote cloud gateway packet loss / CORS validation restriction.");
+    let fileRes;
+    try {
+      fileRes = await fetch(targetStreamUrl);
+      if (!fileRes.ok) throw new Error();
+    } catch(e) {
+      const fallbackProxies = [
+        `https://corsproxy.io/?${encodeURIComponent(targetStreamUrl)}`,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(targetStreamUrl)}`
+      ];
+      
+      for (let proxy of fallbackProxies) {
+        try {
+          fileRes = await fetch(proxy);
+          if (fileRes.ok) break;
+        } catch(err) { console.log("Proxy chain hopping..."); }
+      }
+    }
+
+    if (!fileRes || !fileRes.ok) throw new Error("Cloud packets unreachable.");
     
     progFill.style.width = '85%';
     const fileBlob = await fileRes.blob();
@@ -629,7 +652,7 @@ async function triggerDownload() {
 
     const a = document.createElement('a');
     a.href = blobUrl;
-    a.download = data.filename || 'download.mp4';
+    a.download = finalFileName;
     document.body.appendChild(a);
     a.click();
     
@@ -637,12 +660,12 @@ async function triggerDownload() {
     document.body.removeChild(a);
   } catch (err) {
     try {
-      let fallbackUrl = currentMediaData.url || document.getElementById('urlInput').value.trim();
-      const a = document.createElement('a');
-      a.href = fallbackUrl;
-      a.target = "_blank";
-      a.download = "amogenz_media.mp4";
-      a.click();
+      let finalImgUrl = currentMediaData.url;
+      if (finalImgUrl && !finalImgUrl.includes('pinterest.com')) {
+         window.open(finalImgUrl, '_blank');
+      } else {
+         showError('ABORT OPERATION MATRIX: Silakan klik kanan/tahan gambar preview di atas untuk menyimpan bray.');
+      }
     } catch(fE) {
       showError('ABORT OPERATION MATRIX: ' + err.message);
     }
