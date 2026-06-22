@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPEC — AMOGENZ Downloader</title>
-<meta name="description" content="Download video YouTube, Instagram, Facebook HD/SD tanpa watermark, convert MP3 jernih 320kbps cepat dan gratis. Didukung oleh AMOGENZ Engine.">
-<meta name="keywords" content="amogenz, Spec, amogenz downloader, download video youtube, download mp3 youtube, instagram downloader, facebook downloader hd, amogenz my id, amogenz xyz, download video gratis, youtube converter mp3">
+<title>SPEC — AMOGENZ Universal Downloader</title>
+<meta name="description" content="Download video YouTube, Pinterest, TikTok, Instagram, Facebook HD/SD tanpa watermark, convert MP3 jernih 320kbps cepat dan gratis. Didukung oleh AMOGENZ Engine.">
+<meta name="keywords" content="amogenz, Spec, amogenz downloader, download pinterest, download video youtube, download tiktok no watermark, instagram downloader, facebook downloader hd, amogenz my id, amogenz xyz, download video gratis">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AMOGENZ Inc.">
 <link rel="canonical" href="https://amogenz.my.id">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://amogenz.my.id">
-<meta property="og:title" content="SPEC — AMOGENZ Downloader Premium">
-<meta property="og:description" content="Download video YouTube, Instagram, Facebook HD/SD tanpa watermark dan convert MP3 cepat gratis.">
+<meta property="og:title" content="SPEC — AMOGENZ Universal Downloader Premium">
+<meta property="og:description" content="Download video YouTube, Pinterest, TikTok, Instagram, Facebook HD/SD tanpa watermark dan convert MP3 cepat gratis.">
 <meta property="og:image" content="https://i.ibb.co.com/tPwTvJF2/Spec.webp">
 
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://amogenz.my.id">
-<meta property="twitter:title" content="SPEC — AMOGENZ Downloader Premium">
-<meta property="twitter:description" content="Download video YouTube, Instagram, Facebook HD/SD tanpa watermark dan convert MP3 cepat gratis.">
+<meta property="twitter:title" content="SPEC — AMOGENZ Universal Downloader Premium">
+<meta property="twitter:description" content="Download video YouTube, Pinterest, TikTok, Instagram, Facebook HD/SD tanpa watermark dan convert MP3 cepat gratis.">
 <meta property="twitter:image" content="https://i.ibb.co.com/tPwTvJF2/Spec.webp">
 
 <link rel="icon" type="image/webp" href="https://i.ibb.co.com/tPwTvJF2/Spec.webp">
@@ -31,23 +31,18 @@
     src: url('https://cdn.jsdelivr.net/gh/amogenz/Amogenz/fonts/BerlinSansFBDemi-Bold.woff2') format('woff2'),
          url('https://cdn.jsdelivr.net/gh/amogenz/Amogenz/fonts/BerlinSansFBDemi-Bold.woff') format('woff'),
          url('https://cdn.jsdelivr.net/gh/amogenz/Amogenz/fonts/BerlinSansFB.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+    font-weight: normal; font-style: normal; font-display: swap;
   }
 
   :root {
-    /* === COLORS === */
     --color-bg-base:          #0A0A0A;
     --color-bg-surface:       #111111;
     --color-bg-elevated:      #1A1A1A;
     --color-bg-overlay:       rgba(0, 0, 0, 0.8);
-
     --color-border-default:   #2E2E2E;
     --color-border-subtle:    #1A1A1A;
     --color-border-strong:    #3A3A3A;
     --color-border-accent:    #39FF14;
-
     --color-text-primary:     #FFFFFF;
     --color-text-secondary:   #AAAAAA;
     --color-text-muted:       #666666;
@@ -55,22 +50,18 @@
     --color-text-accent:      #39FF14;
     --color-text-danger:      #FF3B30;
     --color-text-arabic:      #D4A843;
-
     --color-action-primary:          #39FF14;
     --color-action-primary-hover:    #5EFF3D;
     --color-action-primary-pressed:  #2ACC10;
     --color-action-primary-disabled: #1A4A0A;
     --color-action-ghost-hover:      rgba(57, 255, 20, 0.08);
-
     --color-state-success:    #39FF14;
     --color-state-warning:    #FFB800;
     --color-state-danger:     #FF3B30;
     --color-state-info:       #4DA6FF;
-
     --color-verified-bg:      #39FF14;
     --color-verified-text:    #0A0A0A;
 
-    /* === TYPOGRAPHY === */
     --font-display:   'BerlinSansFB', Impact, Arial Black, sans-serif;
     --font-body:      'Segoe', 'Inter', system-ui, sans-serif;
     --font-ui:        'Inter', 'Segoe UI', Helvetica Neue, sans-serif;
@@ -92,15 +83,7 @@
     --type-label-sm:    0.75rem;
     --type-caption:     0.75rem;
 
-    /* === RADIUS === */
-    --radius-none:   0px;
-    --radius-xs:     2px;
-    --radius-sm:     4px;
-    --radius-md:     8px;
-    --radius-lg:     12px;
-    --radius-full:   9999px;
-
-    /* === SHADOWS (NEON GLOW) === */
+    --radius-none:   0px; --radius-xs: 2px; --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-full: 9999px;
     --shadow-neon-sm:    0 0 8px  rgba(57, 255, 20, 0.3);
     --shadow-neon-md:    0 0 16px rgba(57, 255, 20, 0.4);
     --shadow-neon-lg:    0 0 32px rgba(57, 255, 20, 0.5);
@@ -109,389 +92,100 @@
     --shadow-elevated:   0 4px 16px rgba(0, 0, 0, 0.8);
   }
 
-  * { 
-    margin: 0; padding: 0; box-sizing: border-box;
-    letter-spacing: 0;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; letter-spacing: 0; }
+  body { background-color: var(--color-bg-base); color: var(--color-text-secondary); font-family: var(--font-body); font-size: var(--type-body-md); line-height: 1.6; overflow-x: hidden; }
 
-  body {
-    background-color: var(--color-bg-base);
-    color: var(--color-text-secondary);
-    font-family: var(--font-body);
-    font-size: var(--type-body-md);
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  /* Sticky Top Nav with Responsive Scaling */
-  nav {
-    position: sticky; top: 0;
-    height: 56px;
-    background: rgba(10, 10, 10, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--color-border-subtle);
-    z-index: 100;
-    display: flex; justify-content: center; align-items: center;
-  }
-
-  .nav-container {
-    width: 100%; max-width: 1200px;
-    padding: 0 16px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-
-  .brand-logo-txt {
-    font-family: var(--font-display);
-    font-size: var(--type-display-sm);
-    color: var(--color-text-accent);
-  }
-
+  nav { position: sticky; top: 0; height: 56px; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border-subtle); z-index: 100; display: flex; justify-content: center; align-items: center; }
+  .nav-container { width: 100%; max-width: 1200px; padding: 0 16px; display: flex; justify-content: space-between; align-items: center; }
+  .brand-logo-txt { font-family: var(--font-display); font-size: var(--type-display-sm); color: var(--color-text-accent); }
   .nav-tabs { display: flex; gap: 4px; }
-
-  .nav-link {
-    background: transparent; border: none;
-    color: var(--color-text-secondary);
-    font-family: var(--font-ui);
-    font-size: var(--type-label-sm);
-    font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
-    cursor: pointer; padding: 6px 10px;
-    transition: color 150ms ease;
-  }
-  @media(min-width: 400px) {
-    .nav-link { font-size: var(--type-label-md); padding: 8px 12px; }
-  }
+  .nav-link { background: transparent; border: none; color: var(--color-text-secondary); font-family: var(--font-ui); font-size: var(--type-label-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; padding: 6px 10px; transition: color 150ms ease; }
+  @media(min-width: 400px) { .nav-link { font-size: var(--type-label-md); padding: 8px 12px; } }
   .nav-link:hover { color: var(--color-text-accent); }
-  .nav-link.active {
-    color: var(--color-text-accent);
-    border-bottom: 2px solid var(--color-action-primary);
-  }
+  .nav-link.active { color: var(--color-text-accent); border-bottom: 2px solid var(--color-action-primary); }
 
-  /* Grid Area Fluid responsive bray */
-  .layout-wrapper {
-    width: 100%;
-    max-width: 1200px; 
-    margin: 0 auto;
-    padding: 40px 16px;
-  }
-  @media(min-width: 768px) {
-    .layout-wrapper { padding: 40px 24px; }
-  }
+  .layout-wrapper { width: 100%; max-width: 1200px; margin: 0 auto; padding: 40px 16px; }
+  @media(min-width: 768px) { .layout-wrapper { padding: 40px 24px; } }
+  header { text-align: center; margin-bottom: 32px; }
 
-  header {
-    text-align: center; margin-bottom: 32px;
-  }
+  .visitor-counter-panel { display: inline-flex; align-items: center; gap: 6px; background: var(--color-bg-surface); border: 1px solid var(--color-border-default); padding: 6px 14px; border-radius: var(--radius-full); margin-bottom: 16px; }
+  .live-pulse-dot { width: 8px; height: 8px; background: var(--color-action-primary); border-radius: 50%; animation: pulse-neon 2s infinite; }
+  @keyframes pulse-neon { 0%, 100% { box-shadow: 0 0 4px #39FF14; opacity: 1; } 50% { box-shadow: 0 0 12px #39FF14; opacity: 0.6; } }
+  .visitor-text { font-family: var(--font-ui); font-size: var(--type-caption); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.04em; }
 
-  /* Visitor Counter Responsive Panel */
-  .visitor-counter-panel {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--color-bg-surface);
-    border: 1px solid var(--color-border-default);
-    padding: 6px 14px; border-radius: var(--radius-full);
-    margin-bottom: 16px;
-  }
-  .live-pulse-dot {
-    width: 8px; height: 8px;
-    background: var(--color-action-primary);
-    border-radius: 50%;
-    animation: pulse-neon 2s infinite;
-  }
-  @keyframes pulse-neon {
-    0%, 100% { box-shadow: 0 0 4px #39FF14; opacity: 1; }
-    50% { box-shadow: 0 0 12px #39FF14; opacity: 0.6; }
-  }
-  .visitor-text {
-    font-family: var(--font-ui); font-size: var(--type-caption);
-    color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.04em;
-  }
+  h1.brand-hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 7vw, var(--type-display-xl)); color: var(--color-text-primary); line-height: 1.1; margin-bottom: 8px; }
+  h1.brand-hero-title span.neon-glow { color: var(--color-text-accent); animation: neon-flicker 4s infinite; }
+  @keyframes neon-flicker { 0%, 100% { text-shadow: 0 0 8px #39FF14; opacity: 1; } 92% { text-shadow: 0 0 8px #39FF14; opacity: 1; } 93% { text-shadow: none; opacity: 0.5; } 94% { text-shadow: 0 0 8px #39FF14; opacity: 1; } 96% { text-shadow: none; opacity: 0.3; } 97% { text-shadow: 0 0 16px #39FF14; opacity: 1; } }
+  .subtitle-branding-desc { font-size: 11px; color: var(--color-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
 
-  h1.brand-hero-title {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 7vw, var(--type-display-xl));
-    color: var(--color-text-primary);
-    line-height: 1.1; margin-bottom: 8px;
-  }
-  h1.brand-hero-title span.neon-glow {
-    color: var(--color-text-accent);
-    animation: neon-flicker 4s infinite;
-  }
-  @keyframes neon-flicker {
-    0%, 100% { text-shadow: 0 0 8px #39FF14; opacity: 1; }
-    92%       { text-shadow: 0 0 8px #39FF14; opacity: 1; }
-    93%       { text-shadow: none; opacity: 0.5; }
-    94%       { text-shadow: 0 0 8px #39FF14; opacity: 1; }
-    96%       { text-shadow: none; opacity: 0.3; }
-    97%       { text-shadow: 0 0 16px #39FF14; opacity: 1; }
-  }
-
-  .subtitle-branding-desc {
-    font-size: 11px;
-    color: var(--color-text-muted);
-    font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
-  }
-
-  .panel { display: none; }
-  .panel.active { display: block; }
-
-  /* ── Component Cards ── */
-  .amogenz-card {
-    background-color: var(--color-bg-surface);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
-    padding: 16px;
-    margin-bottom: 24px;
-    transition: border-color 250ms ease, box-shadow 250ms ease;
-  }
-  @media(min-width: 480px) {
-    .amogenz-card { padding: 24px; }
-  }
-  .amogenz-card:hover {
-    border-color: var(--color-border-accent);
-    box-shadow: var(--shadow-neon-sm);
-  }
-
+  .amogenz-card { background-color: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: 16px; margin-bottom: 24px; transition: border-color 250ms ease, box-shadow 250ms ease; }
+  @media(min-width: 480px) { .amogenz-card { padding: 24px; } }
+  .amogenz-card:hover { border-color: var(--color-border-accent); box-shadow: var(--shadow-neon-sm); }
   .form-group-block { margin-bottom: 20px; }
-  
-  .ui-label-spec {
-    font-family: var(--font-ui); font-size: var(--type-label-sm); font-weight: 500;
-    color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.06em;
-    margin-bottom: 8px; display: block;
-  }
+  .ui-label-spec { font-family: var(--font-ui); font-size: var(--type-label-sm); font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; display: block; }
 
-  /* ── Form Inputs Responsive Stack ── */
-  .form-input-row {
-    display: flex; 
-    flex-direction: column;
-    gap: 12px; 
-    align-items: stretch;
-  }
-  @media(min-width: 576px) {
-    .form-input-row {
-      flex-direction: row;
-      align-items: center;
-    }
-  }
-  
-  .input-text-amogenz {
-    flex: 1;
-    background-color: var(--color-bg-elevated);
-    border: 1px solid var(--color-border-default);
-    color: var(--color-text-primary);
-    padding: 10px 14px;
-    border-radius: var(--radius-xs);
-    font-family: var(--font-body); font-size: var(--type-body-md);
-    height: 42px; outline: none; min-width: 0;
-    transition: border-color 150ms ease;
-    width: 100%;
-  }
-  .input-text-amogenz::placeholder {
-    color: var(--color-text-muted);
-  }
-  .input-text-amogenz:focus {
-    border-color: var(--color-border-accent);
-    box-shadow: 0 0 0 2px rgba(57, 255, 20, 0.2);
-  }
+  .form-input-row { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+  @media(min-width: 576px) { .form-input-row { flex-direction: row; align-items: center; } }
+  .input-text-amogenz { flex: 1; background-color: var(--color-bg-elevated); border: 1px solid var(--color-border-default); color: var(--color-text-primary); padding: 10px 14px; border-radius: var(--radius-xs); font-family: var(--font-body); font-size: var(--type-body-md); height: 42px; outline: none; min-width: 0; transition: border-color 150ms ease; width: 100%; }
+  .input-text-amogenz:focus { border-color: var(--color-border-accent); box-shadow: 0 0 0 2px rgba(57, 255, 20, 0.2); }
 
-  /* ── Button Architectures ── */
-  .btn-primary-amogenz {
-    background-color: var(--color-action-primary);
-    color: var(--color-bg-base);
-    font-family: var(--font-display); font-weight: 700; font-size: var(--type-label-lg);
-    letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 10px 24px; border-radius: var(--radius-sm); border: none;
-    height: 42px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    transition: background 150ms ease, box-shadow 150ms ease;
-    outline: none;
-    width: 100%;
-  }
-  .btn-primary-amogenz:hover {
-    background: #5EFF3D; box-shadow: var(--shadow-neon-sm);
-  }
-  .btn-primary-amogenz:active {
-    background: #2ACC10;
-  }
-  .btn-primary-amogenz:disabled {
-    background: var(--color-action-primary-disabled); color: var(--color-text-disabled);
-    cursor: not-allowed; box-shadow: none;
-  }
+  .btn-primary-amogenz { background-color: var(--color-action-primary); color: var(--color-bg-base); font-family: var(--font-display); font-weight: 700; font-size: var(--type-label-lg); letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 24px; border-radius: var(--radius-sm); border: none; height: 42px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: background 150ms ease, box-shadow 150ms ease; outline: none; width: 100%; }
+  .btn-primary-amogenz:hover { background: #5EFF3D; box-shadow: var(--shadow-neon-sm); }
+  .btn-primary-amogenz:disabled { background: var(--color-action-primary-disabled); color: var(--color-text-disabled); cursor: not-allowed; box-shadow: none; }
+  .btn-ghost-amogenz { background: transparent; color: var(--color-text-accent); border: 1px solid var(--color-border-accent); font-family: var(--font-display); font-weight: 600; font-size: var(--type-label-sm); padding: 8px 16px; border-radius: var(--radius-sm); height: 42px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em; width: 100%; transition: background 150ms ease, box-shadow 150ms ease; }
+  @media(min-width: 576px) { .btn-ghost-amogenz { width: auto; } }
+  .btn-ghost-amogenz:hover { background: rgba(57,255,20,0.08); box-shadow: var(--shadow-neon-sm); }
 
-  .btn-ghost-amogenz {
-    background: transparent;
-    color: var(--color-text-accent);
-    border: 1px solid var(--color-border-accent);
-    font-family: var(--font-display); font-weight: 600; font-size: var(--type-label-sm);
-    padding: 8px 16px; border-radius: var(--radius-sm); height: 42px; cursor: pointer;
-    text-transform: uppercase; letter-spacing: 0.04em;
-    width: 100%;
-    transition: background 150ms ease, box-shadow 150ms ease;
-  }
-  @media(min-width: 576px) {
-    .btn-ghost-amogenz { width: auto; }
-  }
-  .btn-ghost-amogenz:hover {
-    background: rgba(57,255,20,0.08); box-shadow: var(--shadow-neon-sm);
-  }
-
-  .full-width-element { width: 100%; margin-top: 12px; }
-
-  .amogenz-danger-alert-box {
-    display: none; background-color: var(--color-bg-elevated);
-    border: 1px solid var(--color-text-danger); border-radius: var(--radius-xs);
-    padding: 16px; margin-top: 16px;
-    font-family: var(--font-mono); font-size: var(--type-body-sm); color: var(--color-text-danger);
-    word-break: break-all;
-  }
+  .amogenz-danger-alert-box { display: none; background-color: var(--color-bg-elevated); border: 1px solid var(--color-text-danger); border-radius: var(--radius-xs); padding: 16px; margin-top: 16px; font-family: var(--font-mono); font-size: var(--type-body-sm); color: var(--color-text-danger); word-break: break-all; }
   .amogenz-danger-alert-box.show { display: block; }
 
-  /* ── Content Result Box ── */
   .result-interface-card { display: none; margin-top: 32px; }
   .result-interface-card.show { display: block; }
+  .content-title-heading { font-family: var(--font-body); font-size: clamp(1.15rem, 4vw, var(--type-heading-xl)); font-weight: 700; color: var(--color-text-primary); margin-bottom: 4px; word-break: break-word; }
 
-  .content-title-heading {
-    font-family: var(--font-body); font-size: clamp(1.15rem, 4vw, var(--type-heading-xl)); font-weight: 700;
-    color: var(--color-text-primary); margin-bottom: 4px;
-    word-break: break-word;
-  }
+  .grid-specification-scale { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  @media(min-width: 480px) { .grid-specification-scale { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; } }
 
-  .grid-specification-scale {
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px; 
-    margin-bottom: 16px;
-  }
-  @media(min-width: 480px) {
-    .grid-specification-scale {
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 16px;
-    }
-  }
-
-  .spec-selection-card {
-    background: var(--color-bg-elevated); border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-xs); padding: 12px; cursor: pointer;
-    transition: all 150ms ease;
-  }
-  @media(min-width: 480px) {
-    .spec-selection-card { padding: 16px; }
-  }
+  .spec-selection-card { background: var(--color-bg-elevated); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); padding: 12px; cursor: pointer; transition: all 150ms ease; }
   .spec-selection-card:hover { border-color: var(--color-text-accent); }
-  .spec-selection-card.selected {
-    background: var(--color-action-ghost-hover); border-color: var(--color-border-accent);
-    box-shadow: var(--shadow-neon-sm);
-  }
-  .spec-selection-card .spec-main-txt {
-    font-family: var(--font-body); font-weight: 600; font-size: var(--type-body-sm); color: var(--color-text-primary);
-  }
-  .spec-selection-card .spec-sub-txt {
-    font-family: var(--font-ui); font-size: var(--type-caption); color: var(--color-text-secondary); margin-top: 4px;
-  }
+  .spec-selection-card.selected { background: var(--color-action-ghost-hover); border-color: var(--color-border-accent); box-shadow: var(--shadow-neon-sm); }
+  .spec-selection-card .spec-main-txt { font-family: var(--font-body); font-weight: 600; font-size: var(--type-body-sm); color: var(--color-text-primary); }
+  .spec-selection-card .spec-sub-txt { font-family: var(--font-ui); font-size: var(--type-caption); color: var(--color-text-secondary); margin-top: 4px; }
 
-  /* ── Download Progress System ── */
-  .progress-buffer-wrap {
-    display: none; background: var(--color-bg-elevated); border: 1px solid var(--color-border-default);
-    height: 12px; border-radius: var(--radius-xs); overflow: hidden; margin-bottom: 16px;
-  }
+  .progress-buffer-wrap { display: none; background: var(--color-bg-elevated); border: 1px solid var(--color-border-default); height: 12px; border-radius: var(--radius-xs); overflow: hidden; margin-bottom: 16px; }
   .progress-buffer-fill { background-color: var(--color-action-primary); width: 0%; height: 100%; transition: width 0.1s ease; }
 
-  /* ── CYBERPLAYER & CYBER EQUALIZER ENGINE ── */
-  .cyberplayer-container-box {
-    background-color: var(--color-bg-elevated); border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-xs); padding: 16px; position: relative;
-  }
+  .cyberplayer-container-box { background-color: var(--color-bg-elevated); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); padding: 16px; position: relative; }
   .cyberplayer-interface-deck { display: none; align-items: center; gap: 12px; flex-wrap: wrap; }
   .cyberplayer-interface-deck.show { display: flex; }
-
-  .player-trigger-circular-btn {
-    background: transparent; border: 1px solid var(--color-border-accent);
-    width: 40px; height: 40px; border-radius: 50%; color: var(--color-text-accent);
-    cursor: pointer; display: flex; align-items: center; justify-content: center; outline: none;
-    flex-shrink: 0;
-  }
+  .player-trigger-circular-btn { background: transparent; border: 1px solid var(--color-border-accent); width: 40px; height: 40px; border-radius: 50%; color: var(--color-text-accent); cursor: pointer; display: flex; align-items: center; justify-content: center; outline: none; flex-shrink: 0; }
   .player-trigger-circular-btn:hover { background: var(--color-action-ghost-hover); box-shadow: var(--shadow-neon-sm); }
 
-  .equalizer-neon-glow-flex {
-    display: none; flex: 1; height: 32px; align-items: flex-end; gap: 3px;
-    border-bottom: 1px solid var(--color-border-default); overflow: hidden; padding-bottom: 2px;
-    min-width: 80px;
-  }
+  .equalizer-neon-glow-flex { display: none; flex: 1; height: 32px; align-items: flex-end; gap: 3px; border-bottom: 1px solid var(--color-border-default); overflow: hidden; padding-bottom: 2px; min-width: 80px; }
   .equalizer-neon-glow-flex.show { display: flex; }
   .equalizer-bar-unit { flex: 1; background-color: var(--color-action-primary); height: 3px; border-radius: 1px 1px 0 0; }
-  
   .equalizer-neon-glow-flex.playing .equalizer-bar-unit:nth-child(2n) { animation: eqJump 0.6s ease-in-out infinite alternate; }
   .equalizer-neon-glow-flex.playing .equalizer-bar-unit:nth-child(3n+1) { animation: eqJump 0.8s ease-in-out infinite alternate; }
-  .equalizer-neon-glow-flex.playing .equalizer-bar-unit:nth-child(4n+2) { animation: eqJump 0.5s ease-in-out infinite alternate; }
-  @keyframes eqJump { 0% { height: 3px; background-color: var(--color-action-primary); } 100% { height: 26px; background-color: var(--color-action-primary-hover); } }
+  @keyframes eqJump { 0% { height: 3px; } 100% { height: 26px; } }
 
   .player-duration-stamp { font-family: var(--font-mono); font-size: var(--type-caption); color: var(--color-text-accent); min-width: 45px; text-align: right; flex-shrink: 0; }
-
-  .native-video-playback-window {
-    width: 100%; max-height: 280px; border-radius: var(--radius-xs);
-    background-color: #000000; display: none; margin-top: 12px;
-    border: 1px solid var(--color-border-default);
-    outline: none;
-  }
-  @media(min-width: 768px) {
-    .native-video-playback-window { max-height: 420px; }
-  }
+  .native-video-playback-window { width: 100%; max-height: 280px; border-radius: var(--radius-xs); background-color: #000000; display: none; margin-top: 12px; border: 1px solid var(--color-border-default); outline: none; }
+  @media(min-width: 768px) { .native-video-playback-window { max-height: 420px; } }
   .native-video-playback-window.show { display: block; }
 
-  /* Verified Badge Token System */
-  .verified-badge-amogenz {
-    background-color: var(--color-verified-bg); color: var(--color-verified-text);
-    font-family: var(--font-ui); font-size: 9px; font-weight: 700;
-    padding: 2px 6px; border-radius: var(--radius-full); margin-left: 4px;
-    display: inline-flex; align-items: center; justify-content: center;
-    vertical-align: middle; flex-shrink: 0;
-  }
-
-  /* History Log Rows */
+  .verified-badge-amogenz { background-color: var(--color-verified-bg); color: var(--color-verified-text); font-family: var(--font-ui); font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: var(--radius-full); margin-left: 4px; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; flex-shrink: 0; }
   .history-vertical-stack { display: flex; flex-direction: column; gap: 12px; }
-  .history-log-row-card {
-    background: var(--color-bg-surface); border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-sm); padding: 14px;
-    display: flex; justify-content: space-between; align-items: center; gap: 12px;
-  }
+  .history-log-row-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-sm); padding: 14px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
   .history-text-meta-block { flex: 1; min-width: 0; }
-  .history-main-title { 
-    font-size: var(--type-body-sm); font-weight: 600; color: var(--color-text-primary); 
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
-    display: flex; align-items: center; gap: 4px;
-  }
+  .history-main-title { font-size: var(--type-body-sm); font-weight: 600; color: var(--color-text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px; }
   .history-sub-label { font-family: var(--font-ui); font-size: var(--type-caption); color: var(--color-text-muted); margin-top: 4px; }
-  
-  .history-log-row-card .btn-ghost-amogenz {
-    width: auto; height: 32px; padding: 0 12px; font-size: 12px; flex-shrink: 0;
-  }
+  .history-log-row-card .btn-ghost-amogenz { width: auto; height: 32px; padding: 0 12px; font-size: 12px; flex-shrink: 0; }
+  .history-counter-badge { display: inline-block; background-color: var(--color-bg-elevated); border: 1px solid var(--color-border-default); color: var(--color-text-accent); font-family: var(--font-mono); font-size: var(--type-label-sm); font-weight: 600; padding: 6px 12px; border-radius: var(--radius-xs); margin-bottom: 16px; letter-spacing: 0.04em; text-transform: uppercase; }
 
-  /* Counter Badge Badge di Tab Riwayat bray */
-  .history-counter-badge {
-    display: inline-block;
-    background-color: var(--color-bg-elevated);
-    border: 1px solid var(--color-border-default);
-    color: var(--color-text-accent);
-    font-family: var(--font-mono);
-    font-size: var(--type-label-sm);
-    font-weight: 600;
-    padding: 6px 12px;
-    border-radius: var(--radius-xs);
-    margin-bottom: 16px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  /* Base Loader Output */
   .loader-wrapper-block { display: none; text-align: center; padding: 32px; }
-  .amogenz-spinner {
-    width: 36px; height: 36px;
-    border: 3px solid var(--color-border-default); border-top-color: var(--color-action-primary);
-    border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto;
-  }
+  .amogenz-spinner { width: 36px; height: 36px; border: 3px solid var(--color-border-default); border-top-color: var(--color-action-primary); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  footer {
-    text-align: center; padding: 48px 0 16px;
-    font-family: var(--font-ui); font-size: var(--type-caption); color: var(--color-text-muted);
-  }
+  footer { text-align: center; padding: 48px 0 16px; font-family: var(--font-ui); font-size: var(--type-caption); color: var(--color-text-muted); }
   footer b { color: var(--color-text-accent); font-weight: 500; }
 </style>
 </head>
@@ -499,8 +193,8 @@
 
   <nav>
     <div class="nav-container">
-      <div class="brand-logo-txt" style="display: inline-flex; align-items: center; gap: 1px;">
-        <img src="https://i.ibb.co.com/3YTcV0PZ/Speclogo.webp" alt="Logo" style="width: 40px; height: 40px; object-fit: contain;">
+      <div class="brand-logo-txt" style="display: inline-flex; align-items: center; gap: 2px;">
+        <img src="https://i.ibb.co.com/3YTcV0PZ/Speclogo.webp" alt="Logo" style="width: 34px; height: 34px; object-fit: contain;">
         <span>Spec</span>
       </div>
       <div class="nav-tabs">
@@ -517,14 +211,14 @@
         <div class="visitor-text" id="activeVisitorCount">1 orang sedang memakai</div>
       </div>
       <h1 class="brand-hero-title">ENGINE <span class="neon-glow">DOWNLOADER</span></h1>
-      <p class="subtitle-branding-desc">(downloader media IG Fb Youtube) from amogenz</p>
+      <p class="subtitle-branding-desc">(Universal Media Extractor) from amogenz</p>
     </header>
 
     <div id="panel-downloader" class="panel-section panel active">
       <div class="amogenz-card form-group-block">
         <label class="ui-label-spec">Target Source URL</label>
         <div class="form-input-row">
-          <input type="text" id="urlInput" class="input-text-amogenz" placeholder="Paste link disini bray ...">
+          <input type="text" id="urlInput" class="input-text-amogenz" placeholder="Paste link video, foto, atau audio disini bray ...">
           <button class="btn-ghost-amogenz" onclick="handlePaste()">PASTE</button>
         </div>
       </div>
@@ -548,12 +242,11 @@
             <label class="ui-label-spec">Cyber Equalizer Datastream Channel</label>
             <div class="cyberplayer-container-box">
               <audio id="hiddenAudioPlayer" style="display:none;"></audio>
-              <div id="previewStatus" style="font-family: var(--font-mono); font-size: var(--type-caption); color: var(--text-muted);">Awaiting format specification mapping selection...</div>
+              <div id="previewStatus" style="font-family: var(--font-mono); font-size: var(--type-caption); color: var(--color-text-muted);">Awaiting format specification mapping selection...</div>
               
               <div class="cyber-player" id="cyberPlayerUI">
                 <div class="cyberplayer-interface-deck" id="playerInterfaceDeckRow">
                   <button class="player-trigger-circular-btn" id="customPlayBtn" onclick="toggleCyberPlayer()">▶</button>
-                  
                   <div class="equalizer-neon-glow-flex" id="eqVisualizer">
                     <div class="equalizer-bar-unit"></div><div class="equalizer-bar-unit"></div><div class="equalizer-bar-unit"></div>
                     <div class="equalizer-bar-unit"></div><div class="equalizer-bar-unit"></div><div class="equalizer-bar-unit"></div>
@@ -561,7 +254,6 @@
                     <div class="equalizer-bar-unit"></div><div class="equalizer-bar-unit"></div><div class="equalizer-bar-unit"></div>
                     <div class="equalizer-bar-unit"></div><div class="equalizer-bar-unit"></div><div class="equalizer-bar-unit"></div>
                   </div>
-                  
                   <div class="player-duration-stamp" id="customTimeTracker">00:00</div>
                 </div>
                 <video class="native-video-playback-window" id="customVideoBox" playsinline controls></video>
@@ -584,7 +276,6 @@
       </div>
     </div>
 
-    <!-- Panel Riwayat dengan Sistem Penghitung Item Realtime bray -->
     <div id="panel-history" class="panel-section panel">
       <div class="amogenz-card">
         <div id="historyCounterElement" class="history-counter-badge">TOTAL RECORDED PIPELINES: 0 ITEMS</div>
@@ -595,7 +286,8 @@
     </div>
 
     <footer>
-      <p>AMOGENZ SPEC · &copy; 2026 <br>by Ibrahim Studio</p>
+      <p>AMOGENZ SPEC v1.0.0 CORE · &copy; 2026 <b>Bani Ibrahim Studio</b>. All rights reserved.</p>
+      <p style="font-size:10px; color: var(--color-text-muted); margin-top:8px;">"Dhemit ora ndulit, Setan ora doyan" — Spirit of Youth & Technology</p>
     </footer>
   </div>
 
@@ -639,7 +331,7 @@
         timestamp: Date.now(),
         dateStr: formattedDate
       });
-    } catch (e) { console.error("Firebase payload matrix transaction error:", e); }
+    } catch (e) { console.error("Firebase payload error:", e); }
   };
 
   const historyRef = ref(db, 'downloader_history');
@@ -655,10 +347,7 @@
     const data = snapshot.val();
     const sortedList = Object.values(data).sort((a, b) => b.timestamp - a.timestamp);
     
-    // Perbarui jumlah total baris database riwayat secara realtime bray
-    if (counterEl) {
-      counterEl.textContent = `TOTAL RECORDED PIPELINES: ${sortedList.length} ITEMS`;
-    }
+    if (counterEl) counterEl.textContent = `TOTAL RECORDED PIPELINES: ${sortedList.length} ITEMS`;
 
     container.innerHTML = "";
     sortedList.forEach(item => {
@@ -696,8 +385,26 @@
 <script>
 let currentMediaData = null;
 let selectedFormat = null;
+let lastKnownLink = ""; // Trik UX pencegahan efek nyangkut bray bray bray
 const audioCore = document.getElementById('hiddenAudioPlayer');
 const videoCore = document.getElementById('customVideoBox');
+
+// ── TRIK RESET TOMBOL OTOMATIS ALA ENGINE NADIM ──
+setInterval(() => {
+  const linkInput = document.getElementById('urlInput');
+  const fetchBtn = document.getElementById('fetchBtn');
+  if (linkInput && fetchBtn) {
+    let currentValue = linkInput.value.trim();
+    if (currentValue !== lastKnownLink) {
+      lastKnownLink = currentValue;
+      // Jika input box berubah isinya, kembalikan tombol ke status awal bray
+      if (fetchBtn.textContent.includes('RUNNING') || fetchBtn.disabled) {
+         fetchBtn.disabled = false;
+         fetchBtn.textContent = "⚡ ANALYZE TARGET";
+      }
+    }
+  }
+}, 300);
 
 function switchPanel(panelName) {
   document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
@@ -731,6 +438,7 @@ async function fetchMediaInfo() {
   hideError();
   resetCyberPlayer();
   document.getElementById('resultCard').classList.remove('show');
+  lastKnownLink = url;
 
   try {
     const res = await fetch(`/api/info?url=${encodeURIComponent(url)}`);
@@ -749,7 +457,7 @@ async function fetchMediaInfo() {
 
 function renderResultCard(data) {
   document.getElementById('metaTitle').textContent = data.title;
-  document.getElementById('metaPlatform').textContent = `PIPELINE VERIFIED LOG // ${data.platform ? data.platform.toUpperCase() : 'UNKNOWN CORE'}`;
+  document.getElementById('metaPlatform').textContent = `PIPELINE VERIFIED LOG // ${data.platform ? data.platform.toUpperCase() : 'UNIVERSAL INTERNET'}`;
   
   const grid = document.getElementById('fmtGrid');
   grid.innerHTML = "";
@@ -760,6 +468,8 @@ function renderResultCard(data) {
   }
 
   let highMp3Rendered = false;
+  let hasImageFormat = false;
+
   data.formats.forEach((fmt, idx) => {
     if (fmt === 'mp3') {
       if(!highMp3Rendered) {
@@ -767,13 +477,19 @@ function renderResultCard(data) {
         createFormatCard(grid, 'mp3_std', 'AUDIO MP3 STANDARD', '128kbps Standard Data Saver', false);
         highMp3Rendered = true;
       }
+    } else if (fmt.includes('image')) {
+      createFormatCard(grid, fmt, 'STATIC IMAGE PACKET', 'Source Resolution Asset/Photo', !hasImageFormat && !highMp3Rendered);
+      hasImageFormat = true;
     } else {
       let title = "VIDEO MATRIX HD"; let dec = "Direct 1080p Pre-merged";
       if (fmt === 'video_sd') { title = "VIDEO MATRIX SD"; dec = "Low Bandwidth 480p Pack"; }
-      else if (fmt.includes('image')) { title = "STATIC IMAGE PACKET"; dec = "Source Resolution Asset"; }
-      createFormatCard(grid, fmt, title, dec, idx === 0 && !highMp3Rendered);
+      createFormatCard(grid, fmt, title, dec, idx === 0 && !highMp3Rendered && !hasImageFormat);
     }
   });
+
+  // Proteksi jika sirkuit universal link menghasilkan card, picu klik card pertama bray
+  const firstCard = grid.querySelector('.spec-selection-card');
+  if (firstCard) firstCard.click();
 
   document.getElementById('resultCard').classList.add('show');
 }
@@ -784,7 +500,6 @@ function createFormatCard(targetGrid, fmtKey, title, description, isSelect) {
   card.innerHTML = `<div class="spec-main-txt">${title}</div><div class="spec-sub-txt">${description}</div>`;
   card.onclick = () => selectFormat(fmtKey, card);
   targetGrid.appendChild(card);
-  if (isSelect) selectFormat(fmtKey, card);
 }
 
 async function selectFormat(fmt, cardEl) {
@@ -802,19 +517,16 @@ async function selectFormat(fmt, cardEl) {
   
   try {
     const targetUrl = document.getElementById('urlInput').value.trim();
-    
     let formatQuery = fmt;
-    if (fmt.includes('mp3')) {
-      formatQuery = 'mp3';
-    } else if (currentMediaData.platform === 'youtube' && fmt === 'video_hd') {
-      formatQuery = 'video_sd';
-    }
+    if (fmt.includes('mp3')) formatQuery = 'mp3';
+    else if (fmt.includes('image')) formatQuery = 'image_jpg';
+    else if (currentMediaData.platform === 'youtube' && fmt === 'video_hd') formatQuery = 'video_sd';
 
     const res = await fetch(`/api/download?url=${encodeURIComponent(targetUrl)}&format=${formatQuery}`);
     const streamData = await res.json();
     
     if(!res.ok || !streamData.url) {
-      statusEl.innerHTML = `<span style="color: var(--color-text-muted); font-family:var(--font-mono); font-size: var(--type-caption);">⚠️ STREAM RESTRICTION IN EFFECT. MAIN EXTRACTION CTA IS FUNCTIONAL.</span>`;
+      statusEl.innerHTML = `<span style="color: var(--color-text-muted); font-family:var(--font-mono); font-size: var(--type-caption);">⚠️ STREAM PREVIEW RESTRICTED. MAIN DOWNLOAD CTA REMAINS FUNCTIONAL.</span>`;
       return;
     }
     
@@ -829,24 +541,22 @@ async function selectFormat(fmt, cardEl) {
     } else if (fmt.includes('image')) {
       document.getElementById('cyberPlayerUI').classList.remove('show');
       statusEl.style.display = 'block';
-      statusEl.innerHTML = `<img src="${streamData.url}" style="max-width:100%; max-height:260px; border-radius:var(--radius-sm); display:block; margin:0 auto; border:1px solid var(--color-border-default);" alt="Source Thumbnail View">`;
+      statusEl.innerHTML = `<img src="${streamData.url}" style="max-width:100%; max-height:260px; border-radius:var(--radius-sm); display:block; margin:0 auto; border:1px solid var(--color-border-default);" alt="Source Artwork">`;
     } else {
       audioCore.src = ""; 
       eqEl.classList.remove('show');
       rowDeck.classList.remove('show');
-      
       videoCore.src = streamData.url;
       videoCore.classList.add('show');
     }
   } catch(e) {
-    statusEl.innerHTML = `<span style="color: var(--color-text-muted); font-family:var(--font-mono); font-size:var(--type-caption);">⚠️ NETWORK LINK DISCONNECTED.</span>`;
+    statusEl.innerHTML = `<span style="color: var(--color-text-muted); font-family:var(--font-mono); font-size:var(--type-caption);">⚠️ PREVIEW LIVE EMBED PACKET CARRIER RESTRICTED.</span>`;
   }
 }
 
 function toggleCyberPlayer() {
   const btn = document.getElementById('customPlayBtn');
   const eq = document.getElementById('eqVisualizer');
-  
   if (!videoCore.classList.contains('show')) {
     if (audioCore.paused) {
       audioCore.play();
@@ -868,7 +578,6 @@ function updateTimeUI(currentTime) {
 
 audioCore.ontimeupdate = () => { if(!videoCore.classList.contains('show')) updateTimeUI(audioCore.currentTime); };
 videoCore.ontimeupdate = () => { if(videoCore.classList.contains('show')) updateTimeUI(videoCore.currentTime); };
-
 audioCore.onended = () => resetCyberPlayerUIState();
 videoCore.onended = () => resetCyberPlayerUIState();
 
@@ -889,7 +598,6 @@ function resetCyberPlayerUIState() {
 
 async function triggerDownload() {
   if (!currentMediaData || !selectedFormat) return;
-
   const btn = document.getElementById('dlBtn');
   const progWrap = document.getElementById('progWrap');
   const progFill = document.getElementById('progFill');
@@ -901,28 +609,26 @@ async function triggerDownload() {
 
   try {
     const url = document.getElementById('urlInput').value.trim();
-    
     let formatQuery = selectedFormat;
-    if (selectedFormat.includes('mp3')) {
-      formatQuery = 'mp3';
-    }
+    if (selectedFormat.includes('mp3')) formatQuery = 'mp3';
+    else if (selectedFormat.includes('image')) formatQuery = 'image_jpg';
 
     const res = await fetch(`/api/download?url=${encodeURIComponent(url)}&format=${formatQuery}`);
     const data = await res.json();
     if (!res.ok || !data.url) throw new Error(data.error || "Allocation target datastream pipeline drop.");
 
     progFill.style.width = '50%';
-    btn.innerHTML = '⚡ PARSING BLOB SEGMENTS FROM TARGET LOGS NETWORK...';
+    btn.innerHTML = '⚡ PARSING BLOB SEGMENTS FROM TARGET LOGS...';
 
     const fileRes = await fetch(data.url);
-    if (!fileRes.ok) throw new Error("Remote cloud gateway packet loss.");
+    if (!fileRes.ok) throw new Error("Remote cloud gateway packet loss / CORS validation restriction.");
     
     progFill.style.width = '85%';
     const fileBlob = await fileRes.blob();
     const blobUrl = window.URL.createObjectURL(fileBlob);
 
     progFill.style.width = '100%';
-    btn.innerHTML = '📦 INJECTING DATA PACKAGE WRITER TO STORAGE DIRECTORY...';
+    btn.innerHTML = '📦 INJECTING DATA PACKAGE WRITER...';
 
     const a = document.createElement('a');
     a.href = blobUrl;
@@ -932,9 +638,18 @@ async function triggerDownload() {
     
     window.URL.revokeObjectURL(blobUrl);
     document.body.removeChild(a);
-
   } catch (err) {
-    showError('ABORT OPERATION MATRIX: ' + err.message);
+    // FALLBACK LINK DIRECT DOWNLOAD JIKA CONVERT BLOB CORS DI BLOKIR BROWSER HP bray bray bray
+    try {
+      let fallbackUrl = currentMediaData.url || document.getElementById('urlInput').value.trim();
+      const a = document.createElement('a');
+      a.href = fallbackUrl;
+      a.target = "_blank";
+      a.download = "amogenz_media.mp4";
+      a.click();
+    } catch(fE) {
+      showError('ABORT OPERATION MATRIX: ' + err.message);
+    }
   } finally {
     setTimeout(() => {
       btn.disabled = false;
@@ -950,12 +665,8 @@ function setLoading(show) {
   document.getElementById('fetchBtn').disabled = show;
   document.getElementById('fetchBtn').textContent = show ? '⏳ RUNNING ANALYSIS FLOW...' : '⚡ ANALYZE TARGET';
 }
-
-function showError(msg) {
-  const b = document.getElementById('errorBox');
-  b.textContent = msg; b.classList.add('show');
-}
-function hideError() { document.getElementById('errorBox').classList.remove('show'); }
+function showError(msg) { const b = document.getElementById('errorBox'); b.textContent = msg; b.classList.add('show'); }
+function hideError() { document.getElementById('errorBox').classList.remove('remove'); document.getElementById('errorBox').style.display='none'; }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 </script>
 </body>
