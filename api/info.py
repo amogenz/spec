@@ -176,10 +176,6 @@ def info_handler():
     # dengan client lain selama masih ada sisa budget waktu (maks 9 detik).
     is_youtube = "youtube.com" in url.lower() or "youtu.be" in url.lower()
     client_tries = YT_CLIENT_TRIES if is_youtube else [YT_PLAYER_CLIENT]
-    # Param debug sementara: ?yt_client=tv untuk tes satu client saja
-    dbg_client = request.args.get("yt_client")
-    if is_youtube and dbg_client:
-        client_tries = [f"youtube:player-client={dbg_client}"]
 
     deadline = time.time() + YT_TIMEOUT
     meta = None
@@ -223,6 +219,13 @@ def info_handler():
     if meta is None:
         if timed_out:
             return jsonify({"error": last_err}), 408
+        if is_youtube and any(m in last_err for m in BOT_MARKERS):
+            return jsonify({"error": (
+                "YouTube memproteksi video ini (verifikasi anti-bot) sehingga "
+                "server tidak bisa mengambilnya saat ini. Ini terjadi per video "
+                "\u2014 video lain umumnya tetap bisa. Solusi permanen: pasang "
+                "cookies YouTube via env YTDLP_COOKIES."
+            )}), 500
         return jsonify({"error": f"Intercept Core Failure: {last_err}"}), 500
 
     payload = {

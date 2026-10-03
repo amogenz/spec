@@ -186,6 +186,11 @@ def extract_media(url, fmt, quality=None):
             break
 
     if data is None:
+        if yt and any(m in last_err for m in BOT_MARKERS):
+            raise Exception(
+                "YouTube memproteksi video ini (verifikasi anti-bot) sehingga "
+                "server tidak bisa mengambilnya saat ini."
+            )
         raise Exception(last_err)
 
     direct_url = data.get("url")
