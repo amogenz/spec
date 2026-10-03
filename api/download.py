@@ -1,30 +1,51 @@
 import json
 import subprocess
 import sys
-import os
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 
-# Format map: our format key → yt-dlp format selector
-FORMAT_SELECTORS = {
-    "video_hd":  "best[ext=mp4]/best",
-    "video_sd":  "best[height<=480][ext=mp4]/best[height<=480]",
-    "mp3":       "bestaudio/best",
-    "image_jpg": "best",
-    "image_png": "best",
+# Vercel Hobby membunuh function setelah 10 detik, jadi timeout
+# harus di bawah itu agar gagal dengan JSON rapi (408), bukan 504.
+SUBPROCESS_TIMEOUT = 9
+
+# Client "android" masih mengembalikan format progressive (video+audio
+# satu file, mis. itag 18). Client "ios"/"web"/"default" kini hanya
+# memberi DASH terpisah -> selector single-file selalu gagal dengan
+# "Requested format is not available".
+YT_ANDROID_ARGS = ["--extractor-args", "youtube:player-client=android"]
+
+# Selector PROGRESSIVE-ONLY (vcodec & acodec terisi): browser tidak bisa
+# menggabungkan stream DASH video-only + audio-only, jadi format merged
+# (bestvideo+bestaudio) TIDAK dipakai — dulu menyebabkan video bisu.
+YT_VIDEO_SELECTORS = {
+    "video_hd": "best[acodec!=none][vcodec!=none][height<=1080]/best[acodec!=none][vcodec!=none]",
+    "video_sd": "best[acodec!=none][vcodec!=none][height<=480]/best[acodec!=none][vcodec!=none]",
+}
+YT_QUALITY_VIDEO = {
+    "1080p": "best[acodec!=none][vcodec!=none][height<=1080]/best[acodec!=none][vcodec!=none]",
+    "720p":  "best[acodec!=none][vcodec!=none][height<=720]/best[acodec!=none][vcodec!=none]",
+    "480p":  "best[acodec!=none][vcodec!=none][height<=480]/best[acodec!=none][vcodec!=none]",
+    "360p":  "best[acodec!=none][vcodec!=none][height<=360]/best[acodec!=none][vcodec!=none]",
 }
 
-QUALITY_SELECTORS = {
-    # Video HD qualities
-    "1080p": "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best[height<=1080]",
-    "720p":  "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]/best[height<=720]",
-    # Video SD qualities
-    "480p":  "bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]/best[height<=480][ext=mp4]/best[height<=480]",
-    "360p":  "bestvideo[height<=360][ext=mp4]+bestaudio[ext=m4a]/best[height<=360][ext=mp4]/best[height<=360]",
-    # Audio
+# Non-YouTube (IG/FB/direct): umumnya sudah progressive single-file.
+GENERIC_VIDEO_SELECTORS = {
+    "video_hd": "best[height<=1080][ext=mp4]/best[ext=mp4]/best",
+    "video_sd": "best[height<=480][ext=mp4]/best[height<=480]/best",
+}
+GENERIC_QUALITY_VIDEO = {
+    "1080p": "best[height<=1080][ext=mp4]/best[height<=1080]/best",
+    "720p":  "best[height<=720][ext=mp4]/best[height<=720]/best",
+    "480p":  "best[height<=480][ext=mp4]/best[height<=480]/best",
+    "360p":  "best[height<=360][ext=mp4]/best[height<=360]/best",
+}
+
+AUDIO_QUALITY_SELECTORS = {
     "320kbps": "bestaudio[abr>=256]/bestaudio/best",
     "128kbps": "bestaudio[abr<=160]/bestaudio/best",
 }
+
+VALID_FORMATS = ("video_hd", "video_sd", "mp3", "image_jpg", "image_png")
 
 EXT_MAP = {
     "video_hd": "mp4",
@@ -35,80 +56,76 @@ EXT_MAP = {
 }
 
 
-def get_direct_url(url, fmt, quality=None):
-    """Get direct download URL using yt-dlp -g flag"""
+def is_youtube(url):
+    u = url.lower()
+    return "youtube.com" in u or "youtu.be" in u
 
-    # Select format string
-    if quality and quality in QUALITY_SELECTORS:
-        fmt_str = QUALITY_SELECTORS[quality]
-    else:
-        fmt_str = FORMAT_SELECTORS.get(fmt, "best")
 
-    # Base command
-    cmd = [
-        sys.executable, "-m", "yt_dlp",
-        "--no-playlist",
-        "--no-warnings",
-        "--quiet",
-        "-f", fmt_str,
-        "-g",   # Print URL only
-        url
-    ]
+def resolve_selector(url, fmt, quality=None):
+    """Pilih format selector + apakah perlu android client. Returns (selector, use_android)."""
+    yt = is_youtube(url)
 
-    # For MP3, we need audio URL
     if fmt == "mp3":
-        cmd = [
-            sys.executable, "-m", "yt_dlp",
-            "--no-playlist",
-            "--no-warnings",
-            "--quiet",
-            "-f", fmt_str,
-            "-g",
-            url
-        ]
+        # Audio: client default (android tidak punya stream audio-only)
+        if quality in AUDIO_QUALITY_SELECTORS:
+            return AUDIO_QUALITY_SELECTORS[quality], False
+        return "bestaudio/best", False
 
-    result = subprocess.run(
-        cmd,
-        capture_output=True,
-        text=True,
-        timeout=30
-    )
+    if fmt in ("video_hd", "video_sd"):
+        if yt:
+            qmap = YT_QUALITY_VIDEO
+            fmap = YT_VIDEO_SELECTORS
+            if quality in qmap:
+                return qmap[quality], True
+            return fmap[fmt], True
+        qmap = GENERIC_QUALITY_VIDEO
+        fmap = GENERIC_VIDEO_SELECTORS
+        if quality in qmap:
+            return qmap[quality], False
+        return fmap[fmt], False
 
-    if result.returncode != 0:
-        raise Exception(result.stderr.strip() or "Could not get download URL")
-
-    # yt-dlp -g may return multiple URLs (video + audio for merged formats)
-    urls = [u.strip() for u in result.stdout.strip().split("\n") if u.strip()]
-
-    if not urls:
-        raise Exception("No download URL found")
-
-    # Return first URL (video) — for merged we return the video stream URL
-    # The browser can't merge streams, so we return the best single-file URL
-    return urls[0]
+    # image_jpg / image_png
+    return "best", False
 
 
-def get_info_for_filename(url):
-    """Get title for filename"""
+def extract_media(url, fmt, quality=None):
+    """Satu panggilan yt-dlp --dump-json untuk direct URL + judul sekaligus.
+
+    (Sebelumnya: 2x panggilan "-g" lalu "--dump-json" — 2x lebih lambat
+    dan rawan kena limit 10 detik Vercel Hobby.)
+    """
+    selector, use_android = resolve_selector(url, fmt, quality)
+
     cmd = [
         sys.executable, "-m", "yt_dlp",
         "--dump-json",
         "--no-playlist",
         "--no-warnings",
         "--quiet",
-        url
+        "-f", selector,
     ]
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=20)
-    if result.returncode == 0:
-        try:
-            data = json.loads(result.stdout)
-            title = data.get("title", "download")
-            # Sanitize filename
-            safe = "".join(c for c in title if c.isalnum() or c in " -_")[:50].strip()
-            return safe or "download"
-        except Exception:
-            pass
-    return "download"
+    if use_android:
+        cmd += YT_ANDROID_ARGS
+    cmd += [url]
+
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=SUBPROCESS_TIMEOUT)
+
+    if result.returncode != 0 or not result.stdout.strip():
+        err = (result.stderr or "Could not extract media").strip().split("\n")
+        raise Exception(err[-1][:200] if err else "Could not extract media")
+
+    try:
+        data = json.loads(result.stdout.split("\n")[0])
+    except Exception:
+        raise Exception("Could not parse media info")
+
+    direct_url = data.get("url")
+    if not direct_url:
+        raise Exception("No download URL found")
+
+    title = data.get("title", "download")
+    safe = "".join(c for c in title if c.isalnum() or c in " -_")[:50].strip()
+    return direct_url, (safe or "download")
 
 
 class handler(BaseHTTPRequestHandler):
@@ -130,13 +147,12 @@ class handler(BaseHTTPRequestHandler):
             self.respond(400, {"error": "Missing url parameter"})
             return
 
-        if fmt not in FORMAT_SELECTORS:
+        if fmt not in VALID_FORMATS:
             self.respond(400, {"error": f"Invalid format: {fmt}"})
             return
 
         try:
-            direct_url = get_direct_url(url, fmt, quality)
-            filename_base = get_info_for_filename(url)
+            direct_url, filename_base = extract_media(url, fmt, quality)
             ext = EXT_MAP.get(fmt, "mp4")
             filename = f"{filename_base}.{ext}"
 

@@ -8,6 +8,15 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+# YouTube player client: "ios" / "web" kini gagal dengan error
+# "Requested format is not available" di yt-dlp terbaru.
+# "default" = pilihan client bawaan yt-dlp (paling stabil & lengkap).
+YT_PLAYER_CLIENT = "youtube:player-client=default"
+
+# Vercel Hobby membunuh function setelah 10 detik, jadi timeout
+# harus di bawah itu agar gagal dengan JSON rapi (408), bukan 504.
+YT_TIMEOUT = 9
+
 def parse_formats(info):
     """Parse available formats from yt-dlp info with universal fallback support"""
     formats = []
@@ -37,7 +46,7 @@ def parse_formats(info):
             formats.append("mp3")
         if has_image or not has_video or "photo" in info.get("title", "").lower() or extractor == "pinterest":
             formats.append("image_jpg")
-            
+
         if not formats:
             formats.append("video_hd")
     else:
@@ -53,21 +62,21 @@ def scrape_pinterest_image_fallback(url):
     """Scraper darurat mengekstrak direct link image HD langsung dari HTML meta Pinterest bray"""
     try:
         req = urllib.request.Request(
-            url, 
+            url,
             headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
         )
         html = urllib.request.urlopen(req, timeout=10).read().decode('utf-8')
-        
+
         # Cari tag meta og:image bawaan Pinterest bray
         match = re.search(r'<meta[^>]*property=["\']og:image["\'][^>]*content=["\']([^"\']+)["\']', html)
         if match:
             return match.group(1)
-            
+
         # Fallback regex kedua jika pola meta berbeda bray
         match2 = re.search(r'<meta[^>]*content=["\']([^"\']+)["\'][^>]*property=["\']og:image["\']', html)
         if match2:
             return match2.group(1)
-            
+
         # Taktik tebak resolusi gambar dari ID Pin jika regex gagal bray
         pin_id_match = re.search(r'pin/(\d+)', url)
         if pin_id_match:
@@ -97,14 +106,14 @@ def info_handler():
         ]
         if os.path.exists(cookies_path):
             cmd.extend(["--cookies", cookies_path])
-            
+
         direct_img_url = None
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=25)
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=YT_TIMEOUT)
             if result.returncode == 0 and result.stdout.strip():
                 meta = json.loads(result.stdout.split('\n')[0])
                 direct_url = meta.get("url") or meta.get("direct_url") or meta.get("thumbnail")
-                
+
                 # Jika link masih mengarah ke domain pinterest biasa, paksa bongkar html-nya bray bray bray
                 if not direct_url or "pinterest.com" in direct_url or "pin.it" in direct_url:
                     direct_url = scrape_pinterest_image_fallback(url) or direct_url
@@ -117,9 +126,11 @@ def info_handler():
                     "formats": parse_formats(meta) if meta.get("formats") else ["image_jpg"]
                 }
                 return jsonify(payload), 200
+        except subprocess.TimeoutExpired:
+            return jsonify({"error": "Timeout — Pinterest extraction took too long"}), 408
         except:
             pass
-            
+
         # Hard Fallback jika yt-dlp diblokir total, kita gunakan sirkuit open-graph parser bray
         direct_img_url = scrape_pinterest_image_fallback(url) or url
         return jsonify({
@@ -138,16 +149,16 @@ def info_handler():
         "--no-playlist",
         "--no-warnings",
         "--quiet",
-        "--extractor-args", "youtube:player-client=ios,android_embedded",
+        "--extractor-args", YT_PLAYER_CLIENT,
         url
     ]
     if os.path.exists(cookies_path):
         cmd.extend(["--cookies", cookies_path])
 
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=25)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=YT_TIMEOUT)
         if result.returncode != 0 or not result.stdout.strip():
-            raise Exception(result.stderr or "Target core stream extraction drop.")
+            raise Exception((result.stderr or "Target core stream extraction drop.").strip().split("\n")[-1][:200])
 
         meta = json.loads(result.stdout.split('\n')[0])
         payload = {
@@ -159,6 +170,8 @@ def info_handler():
         }
         return jsonify(payload), 200
 
+    except subprocess.TimeoutExpired:
+        return jsonify({"error": "Timeout — media extraction took too long"}), 408
     except Exception as err:
         return jsonify({"error": f"Intercept Core Failure: {str(err)}"}), 500
 
