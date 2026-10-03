@@ -112,8 +112,13 @@ Dapatkan direct download URL.
 **Error: "yt-dlp not found"**
 → Pastikan `requirements.txt` ada dan Vercel pakai Python runtime
 
-**Error: "Sign in required"**
-→ Beberapa video IG/FB private butuh cookies. Tambahkan cookies.txt ke project.
+**Error: "Sign in required" / "rate-limit reached or login required" (Instagram)**
+→ Instagram membatasi IP datacenter. Solusi: pasang cookies Instagram sendiri
+tanpa masuk ke git — set environment variable `YTDLP_COOKIES` di Vercel
+(isinya = seluruh isi file `cookies.txt` format Netscape) lalu redeploy.
+Cara dapat file-nya: di Chrome desktop yang sudah login instagram.com,
+pasang ekstensi "Get cookies.txt LOCALLY" → export → salin isinya ke env var.
+Jangan pernah commit cookies ke repo publik (akun bisa dibajak).
 
 **Timeout**
 → Vercel free tier max 10 detik. Upgrade ke Pro untuk max 60 detik, atau gunakan `maxDuration: 60` di vercel.json (butuh Pro plan).

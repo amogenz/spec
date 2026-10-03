@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 import sys
 from http.server import BaseHTTPRequestHandler
@@ -7,6 +8,28 @@ from urllib.parse import urlparse, parse_qs
 # Vercel Hobby membunuh function setelah 10 detik, jadi timeout
 # harus di bawah itu agar gagal dengan JSON rapi (408), bukan 504.
 SUBPROCESS_TIMEOUT = 9
+
+
+def get_cookies_arg():
+    """Argumen --cookies untuk yt-dlp.
+
+    Prioritas: env YTDLP_COOKIES (isi file cookies.txt, ditulis ke /tmp
+    agar tidak masuk git) -> file cookies.txt di root project.
+    """
+    cookies_content = os.environ.get("YTDLP_COOKIES", "").strip()
+    if cookies_content:
+        tmp_path = "/tmp/cookies.txt"
+        try:
+            if not os.path.exists(tmp_path):
+                with open(tmp_path, "w", encoding="utf-8") as f:
+                    f.write(cookies_content)
+            return ["--cookies", tmp_path]
+        except Exception:
+            pass
+    legacy = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "cookies.txt")
+    if os.path.exists(legacy):
+        return ["--cookies", legacy]
+    return []
 
 # Client "android" masih mengembalikan format progressive (video+audio
 # satu file, mis. itag 18). Client "ios"/"web"/"default" kini hanya
@@ -106,6 +129,7 @@ def extract_media(url, fmt, quality=None):
     ]
     if use_android:
         cmd += YT_ANDROID_ARGS
+    cmd += get_cookies_arg()
     cmd += [url]
 
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=SUBPROCESS_TIMEOUT)

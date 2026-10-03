@@ -17,6 +17,27 @@ YT_PLAYER_CLIENT = "youtube:player-client=default"
 # harus di bawah itu agar gagal dengan JSON rapi (408), bukan 504.
 YT_TIMEOUT = 9
 
+def get_cookies_arg():
+    """Argumen --cookies untuk yt-dlp.
+
+    Prioritas: env YTDLP_COOKIES (isi file cookies.txt, ditulis ke /tmp
+    agar tidak masuk git) -> file cookies.txt di root project.
+    """
+    cookies_content = os.environ.get("YTDLP_COOKIES", "").strip()
+    if cookies_content:
+        tmp_path = "/tmp/cookies.txt"
+        try:
+            if not os.path.exists(tmp_path):
+                with open(tmp_path, "w", encoding="utf-8") as f:
+                    f.write(cookies_content)
+            return ["--cookies", tmp_path]
+        except Exception:
+            pass
+    legacy = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "cookies.txt")
+    if os.path.exists(legacy):
+        return ["--cookies", legacy]
+    return []
+
 def parse_formats(info):
     """Parse available formats from yt-dlp info with universal fallback support"""
     formats = []
@@ -94,7 +115,6 @@ def info_handler():
 
     # ── INTERSEPTOR PRESET PINTEREST ANTI WEB-REDIRECT ──
     if "pinterest.com" in url.lower() or "pin.it" in url.lower():
-        cookies_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'cookies.txt')
         cmd = [
             sys.executable, "-m", "yt_dlp",
             "--dump-json",
@@ -104,8 +124,7 @@ def info_handler():
             "--ignore-errors",
             url
         ]
-        if os.path.exists(cookies_path):
-            cmd.extend(["--cookies", cookies_path])
+        cmd.extend(get_cookies_arg())
 
         direct_img_url = None
         try:
@@ -142,7 +161,6 @@ def info_handler():
         }), 200
 
     # ── SIRKUIT STANDAR UNTUK YOUTUBE / SOSMED LAIN ──
-    cookies_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'cookies.txt')
     cmd = [
         sys.executable, "-m", "yt_dlp",
         "--dump-json",
@@ -152,8 +170,7 @@ def info_handler():
         "--extractor-args", YT_PLAYER_CLIENT,
         url
     ]
-    if os.path.exists(cookies_path):
-        cmd.extend(["--cookies", cookies_path])
+    cmd.extend(get_cookies_arg())
 
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=YT_TIMEOUT)
