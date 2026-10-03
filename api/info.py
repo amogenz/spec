@@ -121,6 +121,7 @@ def info_handler():
             "--no-playlist",
             "--no-warnings",
             "--quiet",
+            "--impersonate", "chrome",
             "--ignore-errors",
             url
         ]
@@ -167,6 +168,7 @@ def info_handler():
         "--no-playlist",
         "--no-warnings",
         "--quiet",
+        "--impersonate", "chrome",
         "--extractor-args", YT_PLAYER_CLIENT,
         url
     ]

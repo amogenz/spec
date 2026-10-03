@@ -125,6 +125,7 @@ def extract_media(url, fmt, quality=None):
         "--no-playlist",
         "--no-warnings",
         "--quiet",
+        "--impersonate", "chrome",
         "-f", selector,
     ]
     if use_android:
