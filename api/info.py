@@ -176,6 +176,10 @@ def info_handler():
     # dengan client lain selama masih ada sisa budget waktu (maks 9 detik).
     is_youtube = "youtube.com" in url.lower() or "youtu.be" in url.lower()
     client_tries = YT_CLIENT_TRIES if is_youtube else [YT_PLAYER_CLIENT]
+    # Param debug sementara: ?yt_client=tv untuk tes satu client saja
+    dbg_client = request.args.get("yt_client")
+    if is_youtube and dbg_client:
+        client_tries = [f"youtube:player-client={dbg_client}"]
 
     deadline = time.time() + YT_TIMEOUT
     meta = None
