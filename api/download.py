@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 
@@ -36,6 +37,12 @@ def get_cookies_arg():
 # memberi DASH terpisah -> selector single-file selalu gagal dengan
 # "Requested format is not available".
 YT_ANDROID_ARGS = ["--extractor-args", "youtube:player-client=android"]
+
+# Client cadangan saat android kena bot-check YouTube
+# ("Sign in to confirm you're not a bot" kadang hanya menimpa client
+# tertentu per video). tv paling tahan bot-check.
+YT_TV_ARGS = ["--extractor-args", "youtube:player-client=tv"]
+BOT_MARKERS = ("not a bot", "Sign in to confirm")
 
 # Selector PROGRESSIVE-ONLY (vcodec & acodec terisi): browser tidak bisa
 # menggabungkan stream DASH video-only + audio-only, jadi format merged
@@ -116,33 +123,70 @@ def extract_media(url, fmt, quality=None):
 
     (Sebelumnya: 2x panggilan "-g" lalu "--dump-json" — 2x lebih lambat
     dan rawan kena limit 10 detik Vercel Hobby.)
+
+    YouTube kadang melempar bot-check ke client tertentu per video → kalau
+    kena, coba ulang otomatis via client tv dalam sisa budget waktu.
     """
     selector, use_android = resolve_selector(url, fmt, quality)
+    yt = "youtube.com" in url.lower() or "youtu.be" in url.lower()
 
-    cmd = [
-        sys.executable, "-m", "yt_dlp",
-        "--dump-json",
-        "--no-playlist",
-        "--no-warnings",
-        "--quiet",
-        "--impersonate", "chrome",
-        "-f", selector,
-    ]
     if use_android:
-        cmd += YT_ANDROID_ARGS
-    cmd += get_cookies_arg()
-    cmd += [url]
+        # Video YouTube: android dulu (progressive), tv sebagai cadangan
+        # (format tv beda → selector lebih longgar).
+        attempts = [
+            (YT_ANDROID_ARGS, selector),
+            (YT_TV_ARGS, "best[ext=mp4]/best"),
+        ]
+    elif yt:
+        # MP3 YouTube: default dulu, tv sebagai cadangan.
+        attempts = [
+            ([], selector),
+            (YT_TV_ARGS, selector),
+        ]
+    else:
+        attempts = [([], selector)]
 
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=SUBPROCESS_TIMEOUT)
+    deadline = time.time() + SUBPROCESS_TIMEOUT
+    last_err = "Could not extract media"
+    data = None
 
-    if result.returncode != 0 or not result.stdout.strip():
-        err = (result.stderr or "Could not extract media").strip().split("\n")
-        raise Exception(err[-1][:200] if err else "Could not extract media")
+    for extra_args, sel in attempts:
+        remain = deadline - time.time()
+        if remain < 2.5:
+            break
+        cmd = [
+            sys.executable, "-m", "yt_dlp",
+            "--dump-json",
+            "--no-playlist",
+            "--no-warnings",
+            "--quiet",
+            "--impersonate", "chrome",
+            "-f", sel,
+        ]
+        cmd += extra_args
+        cmd += get_cookies_arg()
+        cmd += [url]
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=min(6, remain))
+        except subprocess.TimeoutExpired:
+            last_err = "Timeout — media extraction took too long"
+            if not yt:
+                break
+            continue
+        if result.returncode == 0 and result.stdout.strip():
+            try:
+                data = json.loads(result.stdout.split("\n")[0])
+            except Exception:
+                last_err = "Could not parse media info"
+            break
+        err_lines = (result.stderr or last_err).strip().split("\n")
+        last_err = err_lines[-1][:200] if err_lines else last_err
+        # Lanjut ke client cadangan hanya jika ini bot-check YouTube
+        if not (yt and any(m in last_err for m in BOT_MARKERS)):
+            break
 
-    try:
-        data = json.loads(result.stdout.split("\n")[0])
-    except Exception:
-        raise Exception("Could not parse media info")
+    if data is None:
+        raise Exception(last_err)
 
     direct_url = data.get("url")
     if not direct_url:

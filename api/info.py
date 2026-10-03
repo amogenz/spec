@@ -3,6 +3,7 @@ import sys
 import json
 import re
 import subprocess
+import time
 import urllib.request
 from flask import Flask, request, jsonify
 
@@ -10,8 +11,17 @@ app = Flask(__name__)
 
 # YouTube player client: "ios" / "web" kini gagal dengan error
 # "Requested format is not available" di yt-dlp terbaru.
-# "default" = pilihan client bawaan yt-dlp (paling stabil & lengkap).
+# "default" = pilihan client bawaan yt-dlp (dipakai untuk non-YouTube).
 YT_PLAYER_CLIENT = "youtube:player-client=default"
+
+# Urutan client YouTube yang dicoba saat kena bot-check
+# ("Sign in to confirm you're not a bot" — kadang hanya menimpa client
+# tertentu per video). android & tv paling tahan bot-check.
+YT_CLIENT_TRIES = [
+    "youtube:player-client=android,web",
+    "youtube:player-client=tv",
+]
+BOT_MARKERS = ("not a bot", "Sign in to confirm")
 
 # Vercel Hobby membunuh function setelah 10 detik, jadi timeout
 # harus di bawah itu agar gagal dengan JSON rapi (408), bukan 504.
@@ -162,36 +172,62 @@ def info_handler():
         }), 200
 
     # ── SIRKUIT STANDAR UNTUK YOUTUBE / SOSMED LAIN ──
-    cmd = [
-        sys.executable, "-m", "yt_dlp",
-        "--dump-json",
-        "--no-playlist",
-        "--no-warnings",
-        "--quiet",
-        "--impersonate", "chrome",
-        "--extractor-args", YT_PLAYER_CLIENT,
-        url
-    ]
-    cmd.extend(get_cookies_arg())
+    # Kalau YouTube melempar bot-check ke client tertentu, coba ulang otomatis
+    # dengan client lain selama masih ada sisa budget waktu (maks 9 detik).
+    is_youtube = "youtube.com" in url.lower() or "youtu.be" in url.lower()
+    client_tries = YT_CLIENT_TRIES if is_youtube else [YT_PLAYER_CLIENT]
 
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=YT_TIMEOUT)
-        if result.returncode != 0 or not result.stdout.strip():
-            raise Exception((result.stderr or "Target core stream extraction drop.").strip().split("\n")[-1][:200])
+    deadline = time.time() + YT_TIMEOUT
+    meta = None
+    last_err = "Target core stream extraction drop."
+    timed_out = False
 
-        meta = json.loads(result.stdout.split('\n')[0])
-        payload = {
-            "title": meta.get("title") or "Universal Package Log",
-            "platform": meta.get("extractor_key") or "net",
-            "webpage_url": meta.get("webpage_url") or url,
-            "url": meta.get("url") or meta.get("direct_url") or meta.get("thumbnail") or "",
-            "formats": parse_formats(meta)
-        }
-        return jsonify(payload), 200
+    for client_args in client_tries:
+        remain = deadline - time.time()
+        if remain < 2.5:
+            break
+        cmd = [
+            sys.executable, "-m", "yt_dlp",
+            "--dump-json",
+            "--no-playlist",
+            "--no-warnings",
+            "--quiet",
+            "--impersonate", "chrome",
+            "--extractor-args", client_args,
+            url,
+        ]
+        cmd.extend(get_cookies_arg())
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=min(6, remain))
+        except subprocess.TimeoutExpired:
+            timed_out = True
+            last_err = "Timeout — media extraction took too long"
+            if not is_youtube:
+                break
+            continue
+        if result.returncode == 0 and result.stdout.strip():
+            try:
+                meta = json.loads(result.stdout.split("\n")[0])
+            except Exception:
+                last_err = "Invalid metadata response"
+            break
+        last_err = (result.stderr or last_err).strip().split("\n")[-1][:200]
+        # Lanjut ke client berikutnya hanya jika ini bot-check YouTube
+        if not (is_youtube and any(m in last_err for m in BOT_MARKERS)):
+            break
 
-    except subprocess.TimeoutExpired:
-        return jsonify({"error": "Timeout — media extraction took too long"}), 408
-    except Exception as err:
-        return jsonify({"error": f"Intercept Core Failure: {str(err)}"}), 500
+    if meta is None:
+        if timed_out:
+            return jsonify({"error": last_err}), 408
+        return jsonify({"error": f"Intercept Core Failure: {last_err}"}), 500
+
+    payload = {
+        "title": meta.get("title") or "Universal Package Log",
+        "platform": meta.get("extractor_key") or "net",
+        "webpage_url": meta.get("webpage_url") or url,
+        "url": meta.get("url") or meta.get("direct_url") or meta.get("thumbnail") or "",
+        "formats": parse_formats(meta)
+    }
+    return jsonify(payload), 200
 
 handler = app
