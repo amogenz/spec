@@ -655,9 +655,11 @@ async function triggerDownload() {
     a.download = finalFileName;
     document.body.appendChild(a);
     a.click();
-    
-    window.URL.revokeObjectURL(blobUrl);
     document.body.removeChild(a);
+
+    // JANGAN revoke langsung: Android Chrome membatalkan unduhan kalau
+    // object URL dicabut sebelum browser sempat mulai membacanya.
+    setTimeout(() => window.URL.revokeObjectURL(blobUrl), 10000);
   } catch (err) {
     try {
       let finalImgUrl = currentMediaData.url;
